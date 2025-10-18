@@ -1,0 +1,127 @@
+# Cloud Build Configuration for Africa Business Bridge
+# This file automates the build and deployment process on GCP
+
+steps:
+  # Step 1: Build Backend Docker Image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-backend'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/africa-business-bridge-backend:$SHORT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/africa-business-bridge-backend:latest'
+      - '-f'
+      - 'backend/Dockerfile'
+      - 'backend/'
+    waitFor: ['-']
+
+  # Step 2: Push Backend Image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-backend'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/africa-business-bridge-backend:$SHORT_SHA'
+    waitFor: ['build-backend']
+
+  # Step 3: Build Frontend Docker Image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-frontend'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/africa-business-bridge-frontend:$SHORT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/africa-business-bridge-frontend:latest'
+      - '-f'
+      - 'frontend/Dockerfile'
+      - 'frontend/'
+    waitFor: ['-']
+
+  # Step 4: Push Frontend Image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-frontend'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/africa-business-bridge-frontend:$SHORT_SHA'
+    waitFor: ['build-frontend']
+
+  # Step 5: Deploy Backend to Cloud Run
+  - name: 'gcr.io/cloud-builders/gke-deploy'
+    id: 'deploy-backend'
+    args:
+      - 'run'
+      - '--filename=.'
+      - '--image=gcr.io/$PROJECT_ID/africa-business-bridge-backend:$SHORT_SHA'
+      - '--location=europe-west1'
+      - '--cluster=africa-business-bridge'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=europe-west1'
+    waitFor: ['push-backend']
+
+  # Step 6: Deploy Frontend to Cloud Run
+  - name: 'gcr.io/cloud-builders/gke-deploy'
+    id: 'deploy-frontend'
+    args:
+      - 'run'
+      - '--filename=.'
+      - '--image=gcr.io/$PROJECT_ID/africa-business-bridge-frontend:$SHORT_SHA'
+      - '--location=europe-west1'
+      - '--cluster=africa-business-bridge'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=europe-west1'
+    waitFor: ['push-frontend']
+
+  # Step 7: Run Database Migrations
+  - name: 'gcr.io/cloud-builders/gke-deploy'
+    id: 'run-migrations'
+    args:
+      - 'kubectl'
+      - 'run'
+      - 'db-migration'
+      - '--image=gcr.io/$PROJECT_ID/africa-business-bridge-backend:$SHORT_SHA'
+      - '--restart=Never'
+      - '--'
+      - 'python'
+      - '-c'
+      - 'from app.core.database import engine, Base; from app.models import *; Base.metadata.create_all(bind=engine)'
+    waitFor: ['deploy-backend']
+
+  # Step 8: Run Tests
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'run-tests'
+    args:
+      - 'run'
+      - '--rm'
+      - 'gcr.io/$PROJECT_ID/africa-business-bridge-backend:$SHORT_SHA'
+      - 'pytest'
+      - 'tests/'
+    waitFor: ['build-backend']
+
+# Images to be pushed to Container Registry
+images:
+  - 'gcr.io/$PROJECT_ID/africa-business-bridge-backend:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/africa-business-bridge-backend:latest'
+  - 'gcr.io/$PROJECT_ID/africa-business-bridge-frontend:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/africa-business-bridge-frontend:latest'
+
+# Build options
+options:
+  machineType: 'N1_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
+  
+# Timeout for the entire build
+timeout: '3600s'
+
+# Substitutions for environment variables
+substitutions:
+  _REGION: 'europe-west1'
+  _SERVICE_ACCOUNT: 'manus-ai@nimble-service-475513-s1.iam.gserviceaccount.com'
+
+# Trigger configuration (to be set in Cloud Console)
+# - Branch: main
+# - Filename: cloudbuild.yaml
+# - Substitutions:
+#   - _REGION: europe-west1
+#   - _SERVICE_ACCOUNT: manus-ai@nimble-service-475513-s1.iam.gserviceaccount.com
+

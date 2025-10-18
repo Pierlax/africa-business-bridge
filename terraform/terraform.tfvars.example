@@ -1,0 +1,16 @@
+# Terraform Variables for Africa Business Bridge on GCP
+# Copy this file to terraform.tfvars and fill in your values
+
+project_id = "nimble-service-475513-s1"
+region     = "europe-west1"
+domain     = "africabusinessbridge.it"
+email      = "edoardo.ciech@gmail.com"
+
+# IMPORTANT: Generate strong passwords
+# db_password = "YOUR_STRONG_DB_PASSWORD_HERE"
+# secret_key  = "YOUR_SECRET_KEY_HERE"
+
+# Generate with:
+# openssl rand -base64 32  # for db_password
+# openssl rand -hex 32     # for secret_key
+
