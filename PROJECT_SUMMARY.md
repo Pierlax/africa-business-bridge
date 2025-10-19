@@ -2,23 +2,26 @@
 
 ## 📊 Stato del Progetto
 
-**Versione**: 1.3.0 (con Integrazione Distichain)  
-**Data Completamento Fasi Funzionali**: Ottobre 2025  
-**Stato**: ✅ Moduli Blockchain, Pagamenti e Distichain Implementati - Pronto per Test e Debugging
+**Versione**: 1.4.0 (con Onboarding, Rivelazione Progressiva, UX Writing e Analytics)
+**Data Completamento Fasi Funzionali**: Ottobre 2025
+**Stato**: ✅ Moduli Onboarding, Rivelazione Progressiva, UX Writing e Analytics Implementati - Pronto per Test e Debugging
 
 ## 🎯 Obiettivo Raggiunto
 
-È stata sviluppata la **struttura completa** della piattaforma Africa Business Bridge con l'implementazione dei moduli funzionali chiave, ora arricchita con funzionalità blockchain, di pagamento e le integrazioni ispirate a Distichain:
+È stata sviluppata la **struttura completa** della piattaforma Africa Business Bridge con l'implementazione dei moduli funzionali chiave, ora arricchita con funzionalità blockchain, di pagamento, le integrazioni ispirate a Distichain e le nuove funzionalità per l'adozione utente:
 
 1. ✅ **Architettura Scalabile**: Microservizi con separazione frontend/backend
-2. ✅ **Database Completo**: Tutti i modelli per i 4 moduli principali + Blockchain/Pagamenti + Nuovi Moduli
+2. ✅ **Database Completo**: Tutti i modelli per i 4 moduli principali + Blockchain/Pagamenti + Nuovi Moduli + Analytics
 3. ✅ **Sistema di Autenticazione**: JWT con gestione ruoli multi-tenant
 4. ✅ **Frontend Professionale**: React con design system personalizzato e pagine per tutti i moduli
 5. ✅ **Algoritmo IA**: Business matching integrato e funzionante
 6. ✅ **Contratti Blockchain**: Smart contracts e API per gestione accordi digitali
 7. ✅ **Sistema di Pagamenti Integrato**: Servizi e API per on-ramp/off-ramp (fiat-to-crypto, crypto-to-fiat)
 8. ✅ **Nuovi Moduli (Verifica, Ordini, Logistica, Ispezione)**: Funzionalità avanzate per la gestione del ciclo di vita del commercio internazionale.
-9. ✅ **Documentazione Completa**: API, deployment e guide aggiornate
+9. ✅ **Onboarding Guidato e Rivelazione Progressiva**: Strategie per massimizzare l'adozione utente.
+10. ✅ **UX Writing**: Linguaggio orientato al valore e contestuale.
+11. ✅ **Analytics e Alert**: Monitoraggio metriche chiave e notifiche automatiche.
+12. ✅ **Documentazione Completa**: API, deployment e guide aggiornate
 
 ## 📦 Deliverables
 
@@ -45,6 +48,7 @@ africa-business-bridge/
 | **PROJECT_SUMMARY.md** | Questo documento | `/PROJECT_SUMMARY.md` |
 | **BLOCKCHAIN_PAYMENT_TESTING.md** | Guida al testing per Blockchain e Pagamenti | `/docs/BLOCKCHAIN_PAYMENT_TESTING.md` |
 | **NEW_FEATURES_TESTING.md** | Guida al testing per i nuovi moduli (Verifica, Ordini, Logistica, Ispezione) | `/docs/NEW_FEATURES_TESTING.md` |
+| **ONBOARDING_ANALYTICS_TESTING.md** | Guida al testing per Onboarding, Rivelazione Progressiva e Analytics | `/docs/ONBOARDING_ANALYTICS_TESTING.md` |
 
 ### 3. Modelli Database
 
@@ -82,11 +86,16 @@ africa-business-bridge/
 - `PaymentTransaction`: Record delle transazioni di pagamento (on-ramp/off-ramp)
 - `Wallet`: Indirizzi wallet degli utenti
 
-#### Nuovi Moduli (Integrati) ✅
+#### Moduli Avanzati (Distichain-inspired) ✅
 - **Verifica (KYC/KYB)**: Gestione delle richieste di verifica per utenti e aziende (`Verification`, `VerificationRequest`)
 - **Ordini (OMS)**: Creazione, gestione e tracciamento degli ordini B2B (`Order`, `OrderItem`, `OrderStatus`)
 - **Logistica**: Gestione delle spedizioni, quotazioni e tracciamento (`Shipment`, `ShipmentStatus`, `LogisticsQuote`)
 - **Ispezione**: Richiesta e gestione dei servizi di ispezione (`Inspection`, `InspectionStatus`, `InspectionReport`)
+
+#### Adozione Utente & Analytics (✅ Implementato)
+- **UserAction**: Tracciamento delle azioni chiave degli utenti per l'onboarding e l'adozione.
+- **ConversionMetric**: Metriche aggregate sul funnel di conversione.
+- **Alert**: Notifiche automatiche su anomalie o metriche critiche.
 
 ## 🔧 Tecnologie Implementate
 
@@ -98,6 +107,7 @@ africa-business-bridge/
 - **Icons**: Lucide React
 - **Routing**: React Router DOM
 - **State Management**: Context API
+- **Data Visualization**: Recharts (per Analytics Dashboard)
 
 ### Backend
 - **Framework**: FastAPI 0.104.1
@@ -108,16 +118,14 @@ africa-business-bridge/
 - **ASGI Server**: Uvicorn
 - **Blockchain Integration**: web3.py per interazione con Polygon
 - **Payment Gateways**: Integrazione con Circle, Transak, MoonPay (via API)
+- **Analytics**: Tracciamento azioni utente, funnel di conversione, alert
 
-### AI/ML
-- **Matching Algorithm**: scikit-learn
-- **Text Analysis**: TF-IDF Vectorizer
-- **Similarity**: Cosine Similarity
-
-### Blockchain
-- **Piattaforma**: Polygon (Testnet Mumbai per sviluppo)
-- **Linguaggio Smart Contract**: Solidity
-- **Strumenti**: Hardhat/Foundry (per sviluppo e test smart contract)
+### Infrastruttura
+- **Architettura**: Microservizi
+- **Cache**: Redis
+- **Task Queue**: Celery
+- **File Storage**: Sistema locale (estendibile a S3)
+- **Blockchain**: Polygon (per smart contract e transazioni)
 
 ## 🎨 Design System
 
@@ -143,6 +151,9 @@ africa-business-bridge/
 - ✅ **Gestione Ordini UI** (Creazione e Lista)
 - ✅ **Gestione Logistica UI** (Creazione Spedizione e Richiesta Quotazioni)
 - ✅ **Gestione Ispezioni UI** (Richiesta Ispezione e Stato)
+- ✅ **OnboardingDashboard UI** (Percorsi guidati per nuovi utenti)
+- ✅ **ProgressiveDisclosure UI** (Rivelazione progressiva delle funzionalità)
+- ✅ **AnalyticsDashboard UI** (Visualizzazione metriche di adozione e funnel di conversione)
 
 ## 🔐 Autenticazione
 
@@ -285,78 +296,63 @@ pnpm run dev --host
 - [x] Pagina Formazione nel frontend con eventi, corsi e gestione certificati
 
 ### ✅ Nuove Funzionalità: Blockchain & Pagamenti (COMPLETATO)
-- [x] **Contratti Blockchain**: Implementazione smart contract (Solidity) e API (FastAPI) per creazione, firma, gestione milestone e rilascio pagamenti di accordi digitali.
-- [x] **Sistema di Pagamenti Integrato**: Implementazione servizi e API (FastAPI) per operazioni di on-ramp (fiat-to-crypto) e off-ramp (crypto-to-fiat) tramite provider esterni (Circle, Transak, MoonPay).
-- [x] **Frontend UI**: Pagine dedicate per la gestione dei contratti blockchain e delle operazioni di pagamento.
+- [x] **Contratti Blockchain**: Implementazione smart contract e API per gestione accordi
+- [x] **Sistema di Pagamenti Integrato**: Implementazione servizi e API per on-ramp/off-ramp (fiat-to-crypto, crypto-to-fiat)
+- [x] **Modulo di Verifica Avanzata (KYC/KYB)**: Implementazione modelli, schemi e API per la gestione delle richieste di verifica.
+- [x] **Modulo di Gestione Ordini (OMS)**: Implementazione modelli, schemi e API per la creazione, gestione e tracciamento degli ordini B2B.
+- [x] **Modulo di Gestione Logistica**: Implementazione modelli, schemi e API per la gestione delle spedizioni, quotazioni e tracciamento.
+- [x] **Modulo di Ispezione**: Implementazione modelli, schemi e API per la richiesta e gestione dei servizi di ispezione.
 
-### ✅ Nuove Funzionalità: Integrazione Distichain (COMPLETATO)
-- [x] **Modulo di Verifica Avanzata (KYC/KYB)**: Implementazione modelli, schemi, API e UI per la gestione delle richieste di verifica di utenti e aziende.
-- [x] **Modulo di Gestione Ordini (OMS)**: Implementazione modelli, schemi, API e UI per la creazione, gestione e tracciamento degli ordini B2B con stati e milestone.
-- [x] **Modulo di Gestione Logistica**: Implementazione modelli, schemi, API e UI per la gestione delle spedizioni, richiesta quotazioni da provider logistici e tracciamento.
-- [x] **Modulo di Ispezione**: Implementazione modelli, schemi, API e UI per la richiesta e gestione dei servizi di ispezione per le merci.
+### ✅ Nuove Funzionalità: Adozione Utente & Analytics (COMPLETATO)
+- [x] **Onboarding Guidato**: Percorsi personalizzati per i nuovi utenti per massimizzare l'adozione.
+- [x] **Rivelazione Progressiva**: Funzionalità avanzate svelate al momento giusto, basandosi sull'interazione dell'utente.
+- [x] **UX Writing**: Applicazione di linee guida per un linguaggio chiaro, orientato al valore e contestuale.
+- [x] **Analytics e Alert**: Dashboard analitica per monitorare metriche chiave e sistema di alert automatici.
 
-## 🚧 Prossimi Passi Consigliati
+## 📝 API Documentation
 
-1. **Test e Debugging Approfondito**: Eseguire test unitari, di integrazione e end-to-end per tutti i moduli implementati.
-2. **Refactoring e Ottimizzazione**: Migliorare la qualità del codice, le performance e la sicurezza.
-3. **UI/UX Polishing**: Affinare l'interfaccia utente e l'esperienza utente, implementare l'editor prodotti e il sistema di messaggistica nel frontend.
-4. **Deployment in Produzione**: Preparare l'applicazione per il deployment su un ambiente di produzione (Vercel o GCP).
+La documentazione completa delle API è disponibile tramite Swagger UI una volta avviato il backend:
 
-## 📊 Metriche Progetto
+- **Swagger UI**: `http://localhost:8000/api/docs`
+- **ReDoc**: `http://localhost:8000/api/redoc`
+- **OpenAPI JSON**: `http://localhost:8000/api/openapi.json`
 
-### Codice Scritto
+## 🧪 Testing
 
-| Componente | File | Linee di Codice (stima) |
-|------------|------|-------------------------|
-| **Backend** | 40+ | ~7,000 |
-| **Frontend** | 30+ | ~5,000 |
-| **Blockchain** | 5+ | ~500 |
-| **AI Models** | 1 | ~400 |
-| **Docs** | 8 | ~3,500 |
-| **TOTALE** | **84+** | **~16,400** |
+### Backend
+```bash
+cd api
+pytest
+```
 
-### Modelli Database
+### Frontend
+```bash
+cd frontend
+pnpm test
+```
 
-- **Tabelle**: 25+
-- **Relazioni**: 40+
-- **Campi Totali**: 250+
+## 🤝 Contribuire
 
-### API Endpoints (Implementati)
+Questo è un progetto in sviluppo. Per contribuire:
 
-- **Autenticazione**: 6 endpoints ✅
-- **User Profiles**: 4 endpoints ✅
-- **Expo Virtuale**: 10 endpoints ✅
-- **Business Matching**: 12 endpoints ✅
-- **Market Intelligence**: 15 endpoints ✅
-- **Formazione**: 18 endpoints ✅
-- **Blockchain**: 9 endpoints ✅
-- **Pagamenti**: 5 endpoints ✅
-- **Verifica**: 3 endpoints ✅
-- **Ordini**: 7 endpoints ✅
-- **Logistica**: 5 endpoints ✅
-- **Ispezione**: 3 endpoints ✅
-- **TOTALE**: **97 endpoints**
+1. Crea un branch per la tua feature
+2. Implementa le modifiche con test
+3. Assicurati che tutti i test passino
+4. Crea una pull request con descrizione dettagliata
 
-## 🔒 Sicurezza Implementata
+## 📄 Licenza
 
-- ✅ Password hashing con bcrypt
-- ✅ JWT tokens con expiration
-- ✅ CORS configuration
-- ✅ Input validation (Pydantic)
-- ✅ SQL injection protection (SQLAlchemy ORM)
-- ✅ XSS protection (React)
-- ✅ Transazioni Blockchain sicure
-- ⚠️ Rate limiting (da implementare)
-- ⚠️ HTTPS (da configurare in produzione)
+Questo progetto è proprietario e riservato.
 
-## 🎉 Conclusioni
+## 👥 Team
 
-Il progetto **Africa Business Bridge** ha ora una base solida e funzionale, con tutti i moduli principali implementati, inclusi i sofisticati sistemi di contratti blockchain e pagamenti, e le funzionalità avanzate di gestione commerciale ispirate a Distichain. È pronto per le fasi di test, rifinitura e deployment.
+Sviluppato per Italian Business Partners (IBP)
+
+## 📞 Contatti
+
+Per informazioni sul progetto, contattare il team di sviluppo.
 
 ---
 
-**Progetto sviluppato per Italian Business Partners (IBP)**  
-**Versione**: 1.3.0  
-**Data**: Ottobre 2025  
-**Stato**: ✅ Moduli Blockchain, Pagamenti e Distichain Implementati - Ready for Testing
-
+**Versione**: 1.4.0
+**Ultimo aggiornamento**: 2025

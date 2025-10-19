@@ -7,6 +7,11 @@ import ExpoVirtuale from './pages/ExpoVirtuale';
 import Partners from './pages/Partners';
 import MarketIntelligence from './pages/MarketIntelligence';
 import Training from './pages/Training';
+import BlockchainContracts from './pages/BlockchainContracts';
+import Payments from './pages/Payments';
+import Verification from './pages/Verification';
+import Orders from './pages/Orders';
+import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import './App.css';
 
 // Componente per proteggere le route che richiedono autenticazione
@@ -100,6 +105,46 @@ function App() {
             element={
               <ProtectedRoute>
                 <Training />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/blockchain" 
+            element={
+              <ProtectedRoute>
+                <BlockchainContracts />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/payments" 
+            element={
+              <ProtectedRoute>
+                <Payments />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/verification" 
+            element={
+              <ProtectedRoute>
+                <Verification />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/orders" 
+            element={
+              <ProtectedRoute>
+                <Orders />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/analytics" 
+            element={
+              <ProtectedRoute>
+                <AnalyticsDashboard />
               </ProtectedRoute>
             } 
           />

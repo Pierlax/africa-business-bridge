@@ -1,58 +1,105 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Globe, 
-  LayoutDashboard, 
-  Store, 
-  Users, 
-  TrendingUp, 
-  GraduationCap, 
-  Calendar,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  Bell,
-  Search,
-  Building2,
-  FileText,
-  MessageSquare,
-  BarChart3
+import {
+  Card, CardContent, CardDescription, CardHeader, CardTitle
+} from '@/components/ui/card';
+import {
+  Globe, LayoutDashboard, Store, Users, TrendingUp, GraduationCap,
+  Calendar, Settings, LogOut, Menu, X, Bell, Search, Building2,
+  FileText, MessageSquare, Handshake, DollarSign, ShieldCheck, Package, Truck, ClipboardCheck, BarChart3
 } from 'lucide-react';
+
+import OnboardingDashboard from '../components/OnboardingDashboard';
+import ProgressiveDisclosure from '../components/ProgressiveDisclosure';
+import { getLabel, uxWritingGuide } from '../utils/uxWriting';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(true); // State per controllare la visualizzazione dell'onboarding
+  const [userActions, setUserActions] = useState({
+    first_message_sent: false,
+    meeting_completed: false,
+    contract_signed: false,
+    order_milestone_created: false,
+  });
+  const [unlockedFeatures, setUnlockedFeatures] = useState({});
+
+  useEffect(() => {
+    // Simulate fetching user's onboarding status and actions
+    // In a real app, this would come from the backend
+    const onboardingStatus = localStorage.getItem('onboarding_complete');
+    if (onboardingStatus === 'true') {
+      setShowOnboarding(false);
+    }
+
+    const storedUserActions = JSON.parse(localStorage.getItem('user_actions')) || {};
+    setUserActions(prev => ({...prev, ...storedUserActions}));
+
+    const storedUnlockedFeatures = JSON.parse(localStorage.getItem('unlocked_features')) || {};
+    setUnlockedFeatures(prev => ({...prev, ...storedUnlockedFeatures}));
+
+  }, [user]);
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    localStorage.setItem('onboarding_complete', 'true');
+    // Trigger first message sent action for demo purposes
+    handleUserAction('first_message_sent');
+  };
+
+  const handleUserAction = (actionType, details = {}) => {
+    setUserActions(prev => {
+      const newActions = { ...prev, [actionType]: true };
+      localStorage.setItem('user_actions', JSON.stringify(newActions));
+      // In a real app, also send this to the backend analytics service
+      // trackUserActionAPI(user.id, actionType, details);
+      return newActions;
+    });
+  };
+
+  const handleFeatureUnlock = (feature) => {
+    setUnlockedFeatures(prev => {
+      const newUnlocked = { ...prev, [feature]: true };
+      localStorage.setItem('unlocked_features', JSON.stringify(newUnlocked));
+      return newUnlocked;
+    });
+  };
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  // Menu items basati sul ruolo
+  // Menu items basati sul ruolo e sulla rivelazione progressiva
   const getMenuItems = () => {
     const baseItems = [
       { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     ];
 
+    let dynamicItems = [];
+
     if (user?.role === 'pmi') {
-      return [
-        ...baseItems,
-        { icon: Store, label: 'Expo Virtuale', path: '/expo' },
-        { icon: Users, label: 'Partner Locali', path: '/partners' },
-        { icon: Calendar, label: 'Incontri B2B', path: '/meetings' },
-        { icon: TrendingUp, label: 'Market Intelligence', path: '/market' },
-        { icon: GraduationCap, label: 'Formazione', path: '/training' },
-        { icon: MessageSquare, label: 'Messaggi', path: '/messages' },
+      dynamicItems = [
+        { icon: Store, label: getLabel('navigation.expo'), path: '/expo', tooltip: getLabel('navigation.expo') },
+        { icon: Users, label: getLabel('navigation.matching'), path: '/partners', tooltip: getLabel('navigation.matching') },
+        { icon: TrendingUp, label: getLabel('navigation.market'), path: '/market', tooltip: getLabel('navigation.market') },
+        { icon: GraduationCap, label: getLabel('navigation.training'), path: '/training', tooltip: getLabel('navigation.training') },
+        { icon: MessageSquare, label: 'Messaggi', path: '/messages' }, // Placeholder for actual messages page
+        { icon: ShieldCheck, label: getLabel('navigation.verification'), path: '/verification', tooltip: getLabel('navigation.verification') },
+        { icon: Handshake, label: getLabel('navigation.blockchain'), path: '/blockchain', tooltip: getLabel('navigation.blockchain'), unlocked: unlockedFeatures.blockchain },
+        { icon: DollarSign, label: getLabel('navigation.payments'), path: '/payments', tooltip: getLabel('navigation.payments'), unlocked: unlockedFeatures.payments },
+        { icon: Package, label: getLabel('navigation.orders'), path: '/orders', tooltip: getLabel('navigation.orders'), unlocked: unlockedFeatures.orders },
+        { icon: Truck, label: getLabel('navigation.logistics'), path: '/logistics', tooltip: getLabel('navigation.logistics'), unlocked: unlockedFeatures.logistics },
+        { icon: ClipboardCheck, label: getLabel('navigation.inspection'), path: '/inspection', tooltip: getLabel('navigation.inspection'), unlocked: unlockedFeatures.inspection },
+        { icon: BarChart3, label: 'Analytics', path: '/analytics' }, // Admin/Analyst specific
         { icon: Settings, label: 'Impostazioni', path: '/settings' },
       ];
     } else if (user?.role === 'partner') {
-      return [
-        ...baseItems,
+      dynamicItems = [
         { icon: Building2, label: 'Il Mio Profilo', path: '/profile' },
         { icon: Users, label: 'PMI Italiane', path: '/pmi' },
         { icon: Calendar, label: 'Incontri', path: '/meetings' },
@@ -61,18 +108,22 @@ export default function Dashboard() {
         { icon: Settings, label: 'Impostazioni', path: '/settings' },
       ];
     } else if (user?.role === 'admin') {
-      return [
-        ...baseItems,
+      dynamicItems = [
         { icon: Users, label: 'Gestione Utenti', path: '/admin/users' },
         { icon: FileText, label: 'Contenuti', path: '/admin/content' },
         { icon: BarChart3, label: 'Statistiche', path: '/admin/stats' },
         { icon: TrendingUp, label: 'Market Intelligence', path: '/admin/market' },
         { icon: GraduationCap, label: 'Formazione', path: '/admin/training' },
+        { icon: BarChart3, label: 'Analytics', path: '/analytics' }, // Admin/Analyst specific
         { icon: Settings, label: 'Configurazione', path: '/admin/settings' },
       ];
     }
 
-    return baseItems;
+    // Filter items based on onboarding status and progressive disclosure
+    return [...baseItems, ...dynamicItems.filter(item => {
+      if (showOnboarding && item.path !== '/dashboard') return false; // Hide all except dashboard during onboarding
+      return item.unlocked === undefined || item.unlocked; // Show if not explicitly locked or if unlocked
+    })];
   };
 
   const menuItems = getMenuItems();
@@ -106,6 +157,34 @@ export default function Dashboard() {
 
   const stats = getStats();
 
+  // Mock data for suggested partners for onboarding
+  const mockSuggestedPartners = [
+    {
+      id: 1,
+      company_name: 'Kenya Agri-Exporters Ltd.',
+      city: 'Nairobi', country: 'Kenya',
+      match_score: 92,
+      description: 'Esportatore leader di prodotti agricoli freschi e trasformati.',
+      services_offered: ['Esportazione', 'Consulenza Agricola', 'Logistica']
+    },
+    {
+      id: 2,
+      company_name: 'Tanzania Tech Solutions',
+      city: 'Dar es Salaam', country: 'Tanzania',
+      match_score: 88,
+      description: 'Fornitore di soluzioni IT innovative per il settore agricolo e manifatturiero.',
+      services_offered: ['Sviluppo Software', 'Integrazione Sistemi', 'Supporto IT']
+    },
+    {
+      id: 3,
+      company_name: 'Ethiopian Coffee Beans Co.',
+      city: 'Addis Ababa', country: 'Etiopia',
+      match_score: 85,
+      description: 'Produttore ed esportatore di caffè di alta qualità, con focus su sostenibilità.',
+      services_offered: ['Produzione Caffè', 'Esportazione', 'Certificazioni Bio']
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
@@ -125,7 +204,9 @@ export default function Dashboard() {
             <Link
               key={index}
               to={item.path}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-left"
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-left ${item.unlocked === false ? 'opacity-50 cursor-not-allowed' : ''}`}
+              title={item.tooltip || item.label}
+              onClick={(e) => { if (item.unlocked === false) e.preventDefault(); }}
             >
               <item.icon className="w-5 h-5 text-gray-600" />
               <span className={`${sidebarOpen ? 'block' : 'hidden'} text-sm font-medium text-gray-700`}>
@@ -200,114 +281,127 @@ export default function Dashboard() {
 
         {/* Dashboard Content */}
         <main className="flex-1 p-6 overflow-auto">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            {stats.map((stat, index) => (
-              <Card key={index}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
-                      <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-                    </div>
-                    <stat.icon className={`w-12 h-12 ${stat.color}`} />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {showOnboarding && user?.role === 'pmi' ? (
+            <OnboardingDashboard
+              user={user}
+              suggestedPartners={mockSuggestedPartners}
+              onPartnerSelect={(id) => console.log('Partner selected:', id)} // Replace with actual navigation
+              onTutorialComplete={handleOnboardingComplete}
+            />
+          ) : (
+            <>
+              <ProgressiveDisclosure userActions={userActions} onFeatureUnlock={handleFeatureUnlock} />
 
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Azioni Rapide</CardTitle>
-                <CardDescription>Operazioni frequenti</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {user?.role === 'pmi' && (
-                  <>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Store className="mr-2 w-4 h-4" />
-                      Aggiorna Expo Virtuale
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Users className="mr-2 w-4 h-4" />
-                      Cerca Partner
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Calendar className="mr-2 w-4 h-4" />
-                      Prenota Incontro
-                    </Button>
-                  </>
-                )}
-                {user?.role === 'partner' && (
-                  <>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Building2 className="mr-2 w-4 h-4" />
-                      Aggiorna Profilo
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Users className="mr-2 w-4 h-4" />
-                      Esplora PMI
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Calendar className="mr-2 w-4 h-4" />
-                      Gestisci Disponibilità
-                    </Button>
-                  </>
-                )}
-                {user?.role === 'admin' && (
-                  <>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Users className="mr-2 w-4 h-4" />
-                      Gestisci Utenti
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <FileText className="mr-2 w-4 h-4" />
-                      Pubblica Contenuto
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <BarChart3 className="mr-2 w-4 h-4" />
-                      Visualizza Report
-                    </Button>
-                  </>
-                )}
-              </CardContent>
-            </Card>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                {stats.map((stat, index) => (
+                  <Card key={index}>
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
+                          <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                        </div>
+                        <stat.icon className={`w-12 h-12 ${stat.color}`} />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Attività Recenti</CardTitle>
-                <CardDescription>Ultimi aggiornamenti</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-blue-500 mt-2"></div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Nuovo match disponibile</p>
-                      <p className="text-xs text-gray-500">2 ore fa</p>
+              {/* Quick Actions */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Azioni Rapide</CardTitle>
+                    <CardDescription>Operazioni frequenti</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {user?.role === 'pmi' && (
+                      <>
+                        <Button className="w-full justify-start" variant="outline">
+                          <Store className="mr-2 w-4 h-4" />
+                          Aggiorna Expo Virtuale
+                        </Button>
+                        <Button className="w-full justify-start" variant="outline">
+                          <Users className="mr-2 w-4 h-4" />
+                          Cerca Partner
+                        </Button>
+                        <Button className="w-full justify-start" variant="outline">
+                          <Calendar className="mr-2 w-4 h-4" />
+                          Prenota Incontro
+                        </Button>
+                      </>
+                    )}
+                    {user?.role === 'partner' && (
+                      <>
+                        <Button className="w-full justify-start" variant="outline">
+                          <Building2 className="mr-2 w-4 h-4" />
+                          Aggiorna Profilo
+                        </Button>
+                        <Button className="w-full justify-start" variant="outline">
+                          <Users className="mr-2 w-4 h-4" />
+                          Esplora PMI
+                        </Button>
+                        <Button className="w-full justify-start" variant="outline">
+                          <Calendar className="mr-2 w-4 h-4" />
+                          Gestisci Disponibilità
+                        </Button>
+                      </>
+                    )}
+                    {user?.role === 'admin' && (
+                      <>
+                        <Button className="w-full justify-start" variant="outline">
+                          <Users className="mr-2 w-4 h-4" />
+                          Gestisci Utenti
+                        </Button>
+                        <Button className="w-full justify-start" variant="outline">
+                          <FileText className="mr-2 w-4 h-4" />
+                          Pubblica Contenuto
+                        </Button>
+                        <Button className="w-full justify-start" variant="outline">
+                          <BarChart3 className="mr-2 w-4 h-4" />
+                          Visualizza Report
+                        </Button>
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Attività Recenti</CardTitle>
+                    <CardDescription>Ultimi aggiornamenti</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-blue-500 mt-2"></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">Nuovo match disponibile</p>
+                          <p className="text-xs text-gray-500">2 ore fa</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-green-500 mt-2"></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">Incontro confermato</p>
+                          <p className="text-xs text-gray-500">5 ore fa</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-orange-500 mt-2"></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">Nuovo report disponibile</p>
+                          <p className="text-xs text-gray-500">1 giorno fa</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-green-500 mt-2"></div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Incontro confermato</p>
-                      <p className="text-xs text-gray-500">5 ore fa</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-orange-500 mt-2"></div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Nuovo report disponibile</p>
-                      <p className="text-xs text-gray-500">1 giorno fa</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </>
+          )}
         </main>
       </div>
     </div>

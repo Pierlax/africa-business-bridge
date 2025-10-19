@@ -4,7 +4,7 @@
 
 ## 📋 Panoramica
 
-Africa Business Bridge è una piattaforma web completa che serve come hub digitale per facilitare le connessioni commerciali tra le piccole e medie imprese italiane e i mercati africani emergenti. La piattaforma integra servizi commerciali, market intelligence, business matching basato su IA, formazione, **contratti digitali in blockchain, un sistema di pagamenti integrato**, e ora anche **gestione avanzata di ordini, logistica, ispezioni e verifica KYC/KYB**.
+Africa Business Bridge è una piattaforma web completa che serve come hub digitale per facilitare le connessioni commerciali tra le piccole e medie imprese italiane e i mercati africani emergenti. La piattaforma integra servizi commerciali, market intelligence, business matching basato su IA, formazione, **contratti digitali in blockchain, un sistema di pagamenti integrato**, **gestione avanzata di ordini, logistica, ispezioni e verifica KYC/KYB**, e ora anche **funzionalità avanzate per l'adozione utente, Onboarding Guidato, Rivelazione Progressiva, UX Writing e Analytics**.
 
 ## 🎯 Caratteristiche Principali
 
@@ -20,6 +20,8 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 - **Gestione Logistica**: Richiesta quotazioni, tracciamento spedizioni e integrazione con provider
 - **Ispezioni**: Richiesta e gestione di servizi di ispezione per le merci
 - **Verifica KYC/KYB**: Processo di verifica avanzato per garantire la fiducia tra le parti
+- **Onboarding Guidato**: Percorsi personalizzati per i nuovi utenti per massimizzare l'adozione
+- **Rivelazione Progressiva**: Funzionalità avanzate svelate al momento giusto, basandosi sull'interazione dell'utente
 
 ### Per i Partner Locali
 - **Profilo Pubblico**: Visibilità verso le PMI italiane
@@ -42,6 +44,8 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 - **Gestione Pagamenti**: Monitoraggio delle operazioni di on-ramp e off-ramp
 - **Gestione Verifiche KYC/KYB**: Revisione e approvazione delle richieste di verifica
 - **Monitoraggio Ordini, Logistica e Ispezioni**: Supervisione completa delle operazioni commerciali
+- **Dashboard Analytics**: Monitoraggio delle metriche di adozione utente, funnel di conversione e punti di abbandono
+- **Sistema di Alert**: Notifiche automatiche su anomalie o metriche critiche
 
 ## 🏗️ Architettura Tecnica
 
@@ -51,6 +55,7 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 - **UI Components**: shadcn/ui
 - **Routing**: React Router
 - **State Management**: Context API
+- **Data Visualization**: Recharts (per Analytics Dashboard)
 
 ### Backend
 - **Framework**: FastAPI (Python)
@@ -60,6 +65,7 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 - **API Documentation**: OpenAPI/Swagger
 - **Blockchain Integration**: web3.py per interazione con Polygon
 - **Payment Gateways**: Integrazione con Circle, Transak, MoonPay (via API)
+- **Analytics**: Tracciamento azioni utente, funnel di conversione, alert
 
 ### Infrastruttura
 - **Architettura**: Microservizi
@@ -74,20 +80,21 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 africa-business-bridge/
 ├── frontend/                 # Applicazione React
 │   ├── src/
-│   │   ├── components/      # Componenti riutilizzabili
+│   │   ├── components/      # Componenti riutilizzabili (incluse OnboardingDashboard, ProgressiveDisclosure)
 │   │   ├── contexts/        # Context API (Auth, etc.)
-│   │   ├── pages/           # Pagine dell'applicazione
+│   │   ├── pages/           # Pagine dell'applicazione (incluse AnalyticsDashboard)
 │   │   ├── hooks/           # Custom React hooks
+│   │   ├── utils/           # Utility functions (incluso uxWriting.js)
 │   │   └── lib/             # Utility functions
 │   └── public/              # Asset statici
 │
 ├── api/                      # API FastAPI (Ristrutturata per Vercel)
 │   ├── app/
-│   │   ├── api/            # Route API (incluse blockchain, payments, verification, orders, logistics)
+│   │   ├── api/            # Route API (incluse blockchain, payments, verification, orders, logistics, analytics)
 │   │   ├── core/           # Configurazione e security
-│   │   ├── models/         # Modelli SQLAlchemy (incluse verification, orders, logistics)
-│   │   ├── schemas/        # Schemi Pydantic (incluse blockchain, payments, verification, orders, logistics)
-│   │   ├── services/       # Business logic (inclusi blockchain, payments, verification, orders, logistics)
+│   │   ├── models/         # Modelli SQLAlchemy (incluse verification, orders, logistics, analytics)
+│   │   ├── schemas/        # Schemi Pydantic (incluse blockchain, payments, verification, orders, logistics, analytics)
+│   │   ├── services/       # Business logic (inclusi blockchain, payments, verification, orders, logistics, analytics)
 │   │   └── utils/          # Utility functions
 │   └── tests/              # Test unitari e integrazione
 │
@@ -209,11 +216,16 @@ L'applicazione sarà disponibile su `http://localhost:5173`
 - **PaymentTransaction**: Record delle transazioni di pagamento (on-ramp/off-ramp)
 - **Wallet**: Indirizzi wallet degli utenti
 
-### Nuovi Moduli (Integrati)
+### Moduli Avanzati (Distichain-inspired)
 - **Verifica (KYC/KYB)**: Gestione delle richieste di verifica per utenti e aziende.
 - **Ordini (OMS)**: Creazione, gestione e tracciamento degli ordini B2B.
 - **Logistica**: Gestione delle spedizioni, quotazioni e tracciamento.
 - **Ispezione**: Richiesta e gestione dei servizi di ispezione.
+
+### Adozione Utente & Analytics
+- **UserAction**: Tracciamento delle azioni chiave degli utenti per l'onboarding e l'adozione.
+- **ConversionMetric**: Metriche aggregate sul funnel di conversione.
+- **Alert**: Notifiche automatiche su anomalie o metriche critiche.
 
 ## 🔐 Autenticazione
 
@@ -283,6 +295,10 @@ Il sistema utilizza JWT (JSON Web Tokens) per l'autenticazione:
 - [x] **Modulo di Gestione Ordini (OMS)**: Implementazione modelli, schemi e API per la creazione, gestione e tracciamento degli ordini B2B.
 - [x] **Modulo di Gestione Logistica**: Implementazione modelli, schemi e API per la gestione delle spedizioni, quotazioni e tracciamento.
 - [x] **Modulo di Ispezione**: Implementazione modelli, schemi e API per la richiesta e gestione dei servizi di ispezione.
+- [x] **Onboarding Guidato**: Percorsi personalizzati per i nuovi utenti per massimizzare l'adozione.
+- [x] **Rivelazione Progressiva**: Funzionalità avanzate svelate al momento giusto, basandosi sull'interazione dell'utente.
+- [x] **UX Writing**: Applicazione di linee guida per un linguaggio chiaro, orientato al valore e contestuale.
+- [x] **Analytics e Alert**: Dashboard analitica per monitorare metriche chiave e sistema di alert automatici.
 
 ## 📝 API Documentation
 
@@ -329,5 +345,5 @@ Per informazioni sul progetto, contattare il team di sviluppo.
 
 ---
 
-**Versione**: 1.2.0
+**Versione**: 1.3.0
 **Ultimo aggiornamento**: 2025
