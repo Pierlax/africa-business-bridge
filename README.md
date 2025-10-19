@@ -4,7 +4,7 @@
 
 ## 📋 Panoramica
 
-Africa Business Bridge è una piattaforma web completa che serve come hub digitale per facilitare le connessioni commerciali tra le piccole e medie imprese italiane e i mercati africani emergenti. La piattaforma integra servizi commerciali, market intelligence, business matching basato su IA, formazione e ora anche **contratti digitali in blockchain e un sistema di pagamenti integrato**.
+Africa Business Bridge è una piattaforma web completa che serve come hub digitale per facilitare le connessioni commerciali tra le piccole e medie imprese italiane e i mercati africani emergenti. La piattaforma integra servizi commerciali, market intelligence, business matching basato su IA, formazione, **contratti digitali in blockchain, un sistema di pagamenti integrato**, e ora anche **gestione avanzata di ordini, logistica, ispezioni e verifica KYC/KYB**.
 
 ## 🎯 Caratteristiche Principali
 
@@ -16,6 +16,10 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 - **Calendario B2B**: Gestione incontri e videocall con partner
 - **Contratti Blockchain**: Gestione di accordi digitali sicuri e trasparenti tramite smart contract
 - **Sistema di Pagamenti Integrato**: Conversione e trasferimento di fondi (fiat-to-crypto, crypto-to-fiat) per pagamenti contrattuali
+- **Gestione Ordini (OMS)**: Creazione, tracciamento e gestione di ordini B2B con milestone e pagamenti automatici
+- **Gestione Logistica**: Richiesta quotazioni, tracciamento spedizioni e integrazione con provider
+- **Ispezioni**: Richiesta e gestione di servizi di ispezione per le merci
+- **Verifica KYC/KYB**: Processo di verifica avanzato per garantire la fiducia tra le parti
 
 ### Per i Partner Locali
 - **Profilo Pubblico**: Visibilità verso le PMI italiane
@@ -24,6 +28,10 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 - **Calendario**: Gestione disponibilità e incontri
 - **Contratti Blockchain**: Partecipazione ad accordi digitali e gestione delle milestone
 - **Sistema di Pagamenti Integrato**: Ricezione di pagamenti sicuri tramite stablecoin
+- **Gestione Ordini (OMS)**: Accettazione e gestione degli ordini ricevuti
+- **Gestione Logistica**: Gestione delle spedizioni e interazione con i provider
+- **Ispezioni**: Gestione delle ispezioni richieste per le merci
+- **Verifica KYC/KYB**: Processo di verifica avanzato per garantire la fiducia tra le parti
 
 ### Per gli Amministratori
 - **Dashboard Completa**: Gestione utenti e contenuti
@@ -32,6 +40,8 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 - **Sistema di Notifiche**: Alert e comunicazioni agli utenti
 - **Monitoraggio Contratti Blockchain**: Supervisione degli accordi e delle transazioni
 - **Gestione Pagamenti**: Monitoraggio delle operazioni di on-ramp e off-ramp
+- **Gestione Verifiche KYC/KYB**: Revisione e approvazione delle richieste di verifica
+- **Monitoraggio Ordini, Logistica e Ispezioni**: Supervisione completa delle operazioni commerciali
 
 ## 🏗️ Architettura Tecnica
 
@@ -73,11 +83,11 @@ africa-business-bridge/
 │
 ├── api/                      # API FastAPI (Ristrutturata per Vercel)
 │   ├── app/
-│   │   ├── api/            # Route API (incluse blockchain e payments)
+│   │   ├── api/            # Route API (incluse blockchain, payments, verification, orders, logistics)
 │   │   ├── core/           # Configurazione e security
-│   │   ├── models/         # Modelli SQLAlchemy
-│   │   ├── schemas/        # Schemi Pydantic (incluse blockchain e payments)
-│   │   ├── services/       # Business logic (inclusi blockchain e payments)
+│   │   ├── models/         # Modelli SQLAlchemy (incluse verification, orders, logistics)
+│   │   ├── schemas/        # Schemi Pydantic (incluse blockchain, payments, verification, orders, logistics)
+│   │   ├── services/       # Business logic (inclusi blockchain, payments, verification, orders, logistics)
 │   │   └── utils/          # Utility functions
 │   └── tests/              # Test unitari e integrazione
 │
@@ -199,6 +209,12 @@ L'applicazione sarà disponibile su `http://localhost:5173`
 - **PaymentTransaction**: Record delle transazioni di pagamento (on-ramp/off-ramp)
 - **Wallet**: Indirizzi wallet degli utenti
 
+### Nuovi Moduli (Integrati)
+- **Verifica (KYC/KYB)**: Gestione delle richieste di verifica per utenti e aziende.
+- **Ordini (OMS)**: Creazione, gestione e tracciamento degli ordini B2B.
+- **Logistica**: Gestione delle spedizioni, quotazioni e tracciamento.
+- **Ispezione**: Richiesta e gestione dei servizi di ispezione.
+
 ## 🔐 Autenticazione
 
 Il sistema utilizza JWT (JSON Web Tokens) per l'autenticazione:
@@ -263,6 +279,10 @@ Il sistema utilizza JWT (JSON Web Tokens) per l'autenticazione:
 ### Nuove Funzionalità (Implementate) ✅
 - [x] **Contratti Blockchain**: Implementazione smart contract e API per gestione accordi
 - [x] **Sistema di Pagamenti Integrato**: Implementazione servizi e API per on-ramp/off-ramp (fiat-to-crypto, crypto-to-fiat)
+- [x] **Modulo di Verifica Avanzata (KYC/KYB)**: Implementazione modelli, schemi e API per la gestione delle richieste di verifica.
+- [x] **Modulo di Gestione Ordini (OMS)**: Implementazione modelli, schemi e API per la creazione, gestione e tracciamento degli ordini B2B.
+- [x] **Modulo di Gestione Logistica**: Implementazione modelli, schemi e API per la gestione delle spedizioni, quotazioni e tracciamento.
+- [x] **Modulo di Ispezione**: Implementazione modelli, schemi e API per la richiesta e gestione dei servizi di ispezione.
 
 ## 📝 API Documentation
 
@@ -309,6 +329,5 @@ Per informazioni sul progetto, contattare il team di sviluppo.
 
 ---
 
-**Versione**: 1.1.0  
+**Versione**: 1.2.0
 **Ultimo aggiornamento**: 2025
-

@@ -939,3 +939,293 @@ Ottiene l'elenco delle valute supportate da un provider di pagamento.
 }
 ```
 
+
+
+### Verification
+
+#### POST /verification/submit
+Sottomette una richiesta di verifica (KYC o KYB).
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "verification_type": "kyc",
+  "full_name": "John Doe",
+  "date_of_birth": "1990-01-15",
+  "company_name": "",
+  "vat_number": "",
+  "registration_number": ""
+}
+```
+
+**Response**:
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "verification_type": "kyc",
+  "status": "pending",
+  "created_at": "2025-10-27T10:00:00Z"
+}
+```
+
+#### GET /verification/status
+Ottiene lo stato della verifica per l'utente corrente.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Query Parameters**:
+- `verification_type` (optional): Filtra per tipo di verifica (kyc, kyb)
+
+**Response**:
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "verification_type": "kyc",
+  "status": "pending",
+  "created_at": "2025-10-27T10:00:00Z"
+}
+```
+
+### Orders
+
+#### POST /orders/create
+Crea un nuovo ordine.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "seller_id": 2,
+  "title": "Coffee Beans Order",
+  "description": "Order for 100kg of premium Arabica coffee beans.",
+  "total_amount": 1000.00,
+  "currency": "USD",
+  "delivery_date": "2025-11-15T00:00:00Z",
+  "payment_terms": "NET30",
+  "items": [
+    {
+      "product_id": 10,
+      "description": "Premium Arabica Coffee Beans",
+      "quantity": 100,
+      "unit": "kg",
+      "unit_price": 10.00,
+      "specifications": "Roasted, medium dark"
+    }
+  ]
+}
+```
+
+**Response**:
+```json
+{
+  "id": 1,
+  "order_number": "ORD-20251027-ABCDEFGH",
+  "buyer_id": 1,
+  "seller_id": 2,
+  "title": "Coffee Beans Order",
+  "status": "draft",
+  "created_at": "2025-10-27T10:00:00Z",
+  "items": [...]
+}
+```
+
+#### GET /orders/{order_id}
+Ottiene i dettagli di un ordine specifico.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**: Dettagli dell'ordine.
+
+#### GET /orders/
+Elenca gli ordini dell'utente corrente (sia come buyer che come seller).
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**: Lista di ordini.
+
+#### PUT /orders/{order_id}/submit
+Sottomette un ordine (cambia stato da DRAFT a SUBMITTED).
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**:
+```json
+{
+  "message": "Ordine sottomesso con successo.",
+  "order": {...}
+}
+```
+
+#### PUT /orders/{order_id}/accept
+Accetta un ordine (cambia stato da SUBMITTED a ACCEPTED).
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**:
+```json
+{
+  "message": "Ordine accettato con successo.",
+  "order": {...}
+}
+```
+
+### Logistics
+
+#### POST /logistics/shipments
+Crea una nuova richiesta di spedizione.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "order_id": 1,
+  "shipper_id": 2,
+  "receiver_id": 1,
+  "origin_address": "123 Main St, Nairobi, Kenya",
+  "origin_country": "Kenya",
+  "destination_address": "456 Oak Ave, Milan, Italy",
+  "destination_country": "Italy",
+  "description": "100kg Coffee Beans",
+  "weight_kg": 100.0,
+  "value": 1000.00,
+  "currency": "USD",
+  "preferred_delivery_date": "2025-12-01T00:00:00Z"
+}
+```
+
+**Response**:
+```json
+{
+  "id": 1,
+  "order_id": 1,
+  "status": "quote_requested",
+  "created_at": "2025-10-27T10:00:00Z"
+}
+```
+
+#### GET /logistics/shipments/{shipment_id}
+Ottiene i dettagli di una spedizione.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**: Dettagli della spedizione.
+
+#### POST /logistics/shipments/{shipment_id}/quote
+Richiede una quotazione per una spedizione (simulata).
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**:
+```json
+{
+  "message": "Quotazione richiesta con successo.",
+  "shipment": {...}
+}
+```
+
+#### PUT /logistics/shipments/{shipment_id}/select-quote
+Seleziona una quotazione per una spedizione.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "quote_id": 1
+}
+```
+
+**Response**:
+```json
+{
+  "message": "Quotazione selezionata con successo.",
+  "shipment": {...}
+}
+```
+
+#### PUT /logistics/shipments/{shipment_id}/update-status
+Aggiorna lo stato di una spedizione.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "status": "in_transit",
+  "location": "Dubai",
+  "eta": "2025-11-20T00:00:00Z"
+}
+```
+
+**Response**:
+```json
+{
+  "message": "Stato spedizione aggiornato con successo.",
+  "shipment": {...}
+}
+```
+
+### Inspection
+
+#### POST /inspection/requests
+Crea una nuova richiesta di ispezione.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "order_id": 1,
+  "requested_by_id": 1,
+  "inspection_type": "quality_check",
+  "description": "Quality check for 100kg of coffee beans before shipment.",
+  "location": "Nairobi warehouse",
+  "scheduled_date": "2025-11-10T00:00:00Z"
+}
+```
+
+**Response**:
+```json
+{
+  "id": 1,
+  "order_id": 1,
+  "status": "pending",
+  "created_at": "2025-10-27T10:00:00Z"
+}
+```
+
+#### GET /inspection/requests/{request_id}
+Ottiene i dettagli di una richiesta di ispezione.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**: Dettagli della richiesta di ispezione.
+
+#### PUT /inspection/requests/{request_id}/report
+Sottomette un report di ispezione.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "result": "passed",
+  "comments": "All items meet quality standards.",
+  "report_url": "/uploads/inspection_reports/report_1.pdf"
+}
+```
+
+**Response**:
+```json
+{
+  "message": "Report di ispezione sottomesso con successo.",
+  "inspection_request": {...}
+}
+```
+
