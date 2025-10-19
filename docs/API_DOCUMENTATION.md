@@ -1229,3 +1229,201 @@ Sottomette un report di ispezione.
 }
 ```
 
+
+
+### Analytics
+
+#### GET /analytics/metrics
+Ottiene le metriche di conversione e adozione.
+
+**Headers**: `Authorization: Bearer <token>` (Admin role required)
+
+**Query Parameters**:
+- `from_date` (optional): Data inizio
+- `to_date` (optional): Data fine
+
+**Response**:
+```json
+{
+  "onboarding_completion_rate": 85.5,
+  "business_matching_request_rate": 60.2,
+  "active_users": 1250,
+  "funnel": {
+    "registered": 1500,
+    "onboarding_completed": 1282,
+    "profile_completed": 1100,
+    "first_match_request": 903
+  }
+}
+```
+
+#### GET /analytics/user-actions
+Traccia le azioni degli utenti.
+
+**Headers**: `Authorization: Bearer <token>` (Admin role required)
+
+**Query Parameters**:
+- `user_id` (optional): Filtra per utente
+- `action_type` (optional): Filtra per tipo di azione
+
+**Response**:
+```json
+{
+  "total": 100,
+  "items": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "action_type": "complete_onboarding",
+      "timestamp": "2024-03-01T10:00:00Z"
+    }
+  ]
+}
+```
+
+### Alerts
+
+#### GET /alerts
+Ottiene gli alert per l'utente corrente.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Query Parameters**:
+- `read` (optional): Filtra per stato di lettura (true/false)
+
+**Response**:
+```json
+{
+  "total": 2,
+  "items": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "message": "Hai un nuovo match con Nairobi Distribution Ltd",
+      "link": "/matches/123",
+      "read": false,
+      "created_at": "2024-03-01T12:00:00Z"
+    }
+  ]
+}
+```
+
+#### POST /alerts/{alert_id}/read
+Segna un alert come letto.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response** (204 No Content)
+
+
+
+
+### Caching (Redis)
+
+La cache Redis è utilizzata per migliorare le performance del backend. Le seguenti API sono disponibili per la gestione della cache.
+
+#### GET /cache/stats
+Ottiene le statistiche della cache Redis.
+
+**Headers**: `Authorization: Bearer <token>` (Admin only)
+
+**Response**:
+```json
+{
+  "status": "connected",
+  "used_memory": "1.02M",
+  "connected_clients": 1,
+  "total_commands_processed": 1234
+}
+```
+
+#### POST /cache/invalidate
+Invalida la cache per una specifica chiave o pattern.
+
+**Headers**: `Authorization: Bearer <token>` (Admin only)
+
+**Request Body**:
+```json
+{
+  "pattern": "market_reports:*"
+}
+```
+
+**Response**:
+```json
+{
+  "deleted_keys": 15
+}
+```
+
+### Asynchronous Tasks (Celery)
+
+Le operazioni a lunga esecuzione sono gestite tramite task asincroni con Celery.
+
+#### POST /tasks/certificates/generate
+Genera un certificato PDF in modo asincrono.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "user_id": 1,
+  "course_id": 1,
+  "course_name": "Corso di Internazionalizzazione"
+}
+```
+
+**Response** (202 Accepted):
+```json
+{
+  "task_id": "d8f4b0c8-3e7b-4a1e-9c3c-7d4a3b1a2b3c"
+}
+```
+
+#### POST /tasks/matching/calculate
+Calcola i match per un utente in modo asincrono.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "user_id": 1,
+  "limit": 10
+}
+```
+
+**Response** (202 Accepted):
+```json
+{
+  "task_id": "a1b2c3d4-e5f6-7g8h-9i0j-k1l2m3n4o5p6"
+}
+```
+
+#### GET /tasks/status/{task_id}
+Controlla lo stato di un task asincrono.
+
+**Response**:
+```json
+{
+  "task_id": "d8f4b0c8-3e7b-4a1e-9c3c-7d4a3b1a2b3c",
+  "status": "SUCCESS",
+  "result": {
+    "certificate_url": "/uploads/certificates/user_1_course_1.pdf"
+  }
+}
+```
+
+### Multi-language Support
+
+Il frontend ora supporta multiple lingue. Le traduzioni sono gestite tramite file JSON.
+
+**Supported Languages**:
+- `it`: Italiano
+- `en`: English
+- `sw`: Swahili
+- `am`: Amharic
+
+Il cambio lingua è gestito dal componente `LanguageSwitcher` nel frontend e non richiede interazioni API dirette.
+

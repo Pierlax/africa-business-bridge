@@ -1,0 +1,106 @@
+{
+  "common": {
+    "welcome": "Karibu",
+    "login": "Ingia",
+    "logout": "Toka",
+    "register": "Jisajili",
+    "dashboard": "Dashibodi",
+    "profile": "Wasifu",
+    "settings": "Mipangilio",
+    "language": "Lugha",
+    "save": "Hifadhi",
+    "cancel": "Ghairi",
+    "delete": "Futa",
+    "edit": "Hariri",
+    "loading": "Inapakia...",
+    "error": "Hitilafu",
+    "success": "Mafanikio",
+    "warning": "Onyo"
+  },
+  "auth": {
+    "email": "Barua Pepe",
+    "password": "Neno la Siri",
+    "confirmPassword": "Thibitisha Neno la Siri",
+    "fullName": "Jina Kamili",
+    "company": "Kampuni",
+    "loginTitle": "Ingia kwenye Africa Business Bridge",
+    "registerTitle": "Jisajili kwenye Africa Business Bridge",
+    "forgotPassword": "Umesahau Neno la Siri?",
+    "rememberMe": "Nikumbuke",
+    "noAccount": "Huna akaunti?",
+    "haveAccount": "Una akaunti tayari?"
+  },
+  "navigation": {
+    "expo": "Expo Halisi",
+    "matching": "Kuoanisha Biashara",
+    "market": "Akili ya Soko",
+    "training": "Mafunzo",
+    "blockchain": "Mikataba ya Blockchain",
+    "payments": "Malipo",
+    "verification": "Uthibitisho wa KYC/KYB",
+    "orders": "Maagizo",
+    "logistics": "Logistiki",
+    "analytics": "Uchambuzi",
+    "admin": "Utawala"
+  },
+  "expo": {
+    "title": "Expo Halisi",
+    "description": "Onyesha bidhaa na huduma zako",
+    "products": "Bidhaa",
+    "addProduct": "Ongeza Bidhaa",
+    "editProduct": "Hariri Bidhaa",
+    "productName": "Jina la Bidhaa",
+    "productDescription": "Maelezo ya Bidhaa",
+    "price": "Bei",
+    "category": "Kategoria"
+  },
+  "matching": {
+    "title": "Kuoanisha Biashara",
+    "description": "Tafuta mwenzi wako bora Afrika",
+    "suggestions": "Mapendekezo",
+    "myMatches": "Oanisho Zangu",
+    "matchScore": "Alama ya Oanisho",
+    "accept": "Kubali",
+    "reject": "Kataa",
+    "viewProfile": "Tazama Wasifu"
+  },
+  "market": {
+    "title": "Akili ya Soko",
+    "description": "Habari na uchambuzi kutoka sokoni lenye lengo",
+    "reports": "Ripoti",
+    "news": "Habari",
+    "alerts": "Onyo",
+    "createAlert": "Tengeneza Onyo",
+    "country": "Nchi",
+    "sector": "Sekta"
+  },
+  "training": {
+    "title": "Mafunzo",
+    "description": "Webinars, kozi, na vyeti",
+    "events": "Matukio",
+    "courses": "Kozi",
+    "myEnrollments": "Kozi Zangu",
+    "register": "Jisajili",
+    "viewCertificate": "Tazama Cheti"
+  },
+  "blockchain": {
+    "title": "Mikataba ya Blockchain",
+    "description": "Simamia mikataba halisi salama",
+    "createContract": "Tengeneza Mkataba",
+    "myContracts": "Mikataba Yangu",
+    "status": "Hali",
+    "signContract": "Tia Saini Mkataba",
+    "viewDetails": "Tazama Maelezo"
+  },
+  "payments": {
+    "title": "Malipo",
+    "description": "Ubadilishanaji wa pesa na uhamishaji",
+    "onRamp": "Nunua Crypto",
+    "offRamp": "Uza Crypto",
+    "transactions": "Miamala",
+    "amount": "Kiasi",
+    "currency": "Sarafu",
+    "exchangeRate": "Kiwango cha Ubadilishanaji"
+  }
+}
+

@@ -1,0 +1,106 @@
+{
+  "common": {
+    "welcome": "እንኳን ደህና መጡ",
+    "login": "ግባ",
+    "logout": "ውጣ",
+    "register": "ተመዝገብ",
+    "dashboard": "ዳሽቦርድ",
+    "profile": "መገለጫ",
+    "settings": "ቅንብሮች",
+    "language": "ቋንቋ",
+    "save": "ያስቀምጡ",
+    "cancel": "ሰርዝ",
+    "delete": "ሰርዝ",
+    "edit": "ያርትዑ",
+    "loading": "በመጫን ላይ...",
+    "error": "ስህተት",
+    "success": "ስኬት",
+    "warning": "ማስጠንቀቂያ"
+  },
+  "auth": {
+    "email": "ኢሜይል",
+    "password": "ይለፍ ቃል",
+    "confirmPassword": "ይለፍ ቃል ያረጋግጡ",
+    "fullName": "ሙሉ ስም",
+    "company": "ኩባንያ",
+    "loginTitle": "ወደ Africa Business Bridge ግባ",
+    "registerTitle": "በ Africa Business Bridge ላይ ተመዝገብ",
+    "forgotPassword": "ይለፍ ቃል ረስተዋል?",
+    "rememberMe": "ያስታውሱኝ",
+    "noAccount": "ሂሳብ የላቀዎ?",
+    "haveAccount": "ቀድሞ ሂሳብ አለዎት?"
+  },
+  "navigation": {
+    "expo": "ምናባዊ ኤክስፖ",
+    "matching": "ንግድ ማዛመድ",
+    "market": "የገበያ ሕሊና",
+    "training": "ስልጠና",
+    "blockchain": "ብሎክቼይን ውል",
+    "payments": "ክፍያዎች",
+    "verification": "KYC/KYB ማረጋገጫ",
+    "orders": "ትዕዛዞች",
+    "logistics": "ሎጂስቲክስ",
+    "analytics": "ትንታኔ",
+    "admin": "አስተዳደር"
+  },
+  "expo": {
+    "title": "ምናባዊ ኤክስፖ",
+    "description": "ምርቶችዎን እና አገልግሎቶችዎን ያሳዩ",
+    "products": "ምርቶች",
+    "addProduct": "ምርት ያክሉ",
+    "editProduct": "ምርት ያርትዑ",
+    "productName": "የምርት ስም",
+    "productDescription": "የምርት መግለጫ",
+    "price": "ዋጋ",
+    "category": "ምድብ"
+  },
+  "matching": {
+    "title": "ንግድ ማዛመድ",
+    "description": "በአፍሪካ ውስጥ ተስማሚ ሥራ አጋር ይፈልጉ",
+    "suggestions": "ሀሳቦች",
+    "myMatches": "ሞያዬ ማዛመጃ",
+    "matchScore": "ማዛመጃ ነጥብ",
+    "accept": "ተቀበል",
+    "reject": "ውድቅ ያድርጉ",
+    "viewProfile": "መገለጫ ይመልከቱ"
+  },
+  "market": {
+    "title": "የገበያ ሕሊና",
+    "description": "ከታሪክ ገበያዎች ዜና እና ትንታኔ",
+    "reports": "ሪፖርቶች",
+    "news": "ዜና",
+    "alerts": "ማስጠንቀቂያ",
+    "createAlert": "ማስጠንቀቂያ ይፍጠሩ",
+    "country": "ሀገር",
+    "sector": "ሴክተር"
+  },
+  "training": {
+    "title": "ስልጠና",
+    "description": "ዌብናር፣ ኮርሶች እና ሰርቲፊኬቶች",
+    "events": "ክስተቶች",
+    "courses": "ኮርሶች",
+    "myEnrollments": "ኮርሶቼ",
+    "register": "ተመዝገብ",
+    "viewCertificate": "ሰርቲፊኬት ይመልከቱ"
+  },
+  "blockchain": {
+    "title": "ብሎክቼይን ውል",
+    "description": "ደህንነቱ የተጠበቀ ዲጂታል ስምምነቶችን ያስተዳድሩ",
+    "createContract": "ውል ይፍጠሩ",
+    "myContracts": "ውሎቼ",
+    "status": "ሁኔታ",
+    "signContract": "ውል ይፈርሙ",
+    "viewDetails": "ዝርዝር ይመልከቱ"
+  },
+  "payments": {
+    "title": "ክፍያዎች",
+    "description": "ገንዘብ ልወወጥ እና ዝውውል",
+    "onRamp": "ክሪፕቶ ይገዙ",
+    "offRamp": "ክሪፕቶ ይሸጡ",
+    "transactions": "ግብይቶች",
+    "amount": "መጠን",
+    "currency": "ምንዛሪ",
+    "exchangeRate": "የልወወጥ ተመን"
+  }
+}
+

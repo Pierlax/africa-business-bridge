@@ -1,0 +1,106 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "fullName": "Full Name",
+    "company": "Company",
+    "loginTitle": "Login to Africa Business Bridge",
+    "registerTitle": "Register on Africa Business Bridge",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember Me",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?"
+  },
+  "navigation": {
+    "expo": "Virtual Expo",
+    "matching": "Business Matching",
+    "market": "Market Intelligence",
+    "training": "Training",
+    "blockchain": "Blockchain Contracts",
+    "payments": "Payments",
+    "verification": "KYC/KYB Verification",
+    "orders": "Orders",
+    "logistics": "Logistics",
+    "analytics": "Analytics",
+    "admin": "Administration"
+  },
+  "expo": {
+    "title": "Virtual Expo",
+    "description": "Showcase your products and services",
+    "products": "Products",
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "productName": "Product Name",
+    "productDescription": "Product Description",
+    "price": "Price",
+    "category": "Category"
+  },
+  "matching": {
+    "title": "Business Matching",
+    "description": "Find your ideal partners in Africa",
+    "suggestions": "Suggestions",
+    "myMatches": "My Matches",
+    "matchScore": "Match Score",
+    "accept": "Accept",
+    "reject": "Reject",
+    "viewProfile": "View Profile"
+  },
+  "market": {
+    "title": "Market Intelligence",
+    "description": "News and analysis from target markets",
+    "reports": "Reports",
+    "news": "News",
+    "alerts": "Alerts",
+    "createAlert": "Create Alert",
+    "country": "Country",
+    "sector": "Sector"
+  },
+  "training": {
+    "title": "Training",
+    "description": "Webinars, courses, and certificates",
+    "events": "Events",
+    "courses": "Courses",
+    "myEnrollments": "My Courses",
+    "register": "Register",
+    "viewCertificate": "View Certificate"
+  },
+  "blockchain": {
+    "title": "Blockchain Contracts",
+    "description": "Manage secure digital agreements",
+    "createContract": "Create Contract",
+    "myContracts": "My Contracts",
+    "status": "Status",
+    "signContract": "Sign Contract",
+    "viewDetails": "View Details"
+  },
+  "payments": {
+    "title": "Payments",
+    "description": "Fund conversion and transfer",
+    "onRamp": "Buy Crypto",
+    "offRamp": "Sell Crypto",
+    "transactions": "Transactions",
+    "amount": "Amount",
+    "currency": "Currency",
+    "exchangeRate": "Exchange Rate"
+  }
+}
+

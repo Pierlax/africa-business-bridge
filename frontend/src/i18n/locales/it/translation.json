@@ -1,0 +1,106 @@
+{
+  "common": {
+    "welcome": "Benvenuto",
+    "login": "Accedi",
+    "logout": "Esci",
+    "register": "Registrati",
+    "dashboard": "Dashboard",
+    "profile": "Profilo",
+    "settings": "Impostazioni",
+    "language": "Lingua",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "success": "Successo",
+    "warning": "Avviso"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Conferma Password",
+    "fullName": "Nome Completo",
+    "company": "Azienda",
+    "loginTitle": "Accedi a Africa Business Bridge",
+    "registerTitle": "Registrati su Africa Business Bridge",
+    "forgotPassword": "Password dimenticata?",
+    "rememberMe": "Ricordami",
+    "noAccount": "Non hai un account?",
+    "haveAccount": "Hai già un account?"
+  },
+  "navigation": {
+    "expo": "Expo Virtuale",
+    "matching": "Business Matching",
+    "market": "Market Intelligence",
+    "training": "Formazione",
+    "blockchain": "Contratti Blockchain",
+    "payments": "Pagamenti",
+    "verification": "Verifica KYC/KYB",
+    "orders": "Ordini",
+    "logistics": "Logistica",
+    "analytics": "Analytics",
+    "admin": "Amministrazione"
+  },
+  "expo": {
+    "title": "Expo Virtuale",
+    "description": "Presenta i tuoi prodotti e servizi",
+    "products": "Prodotti",
+    "addProduct": "Aggiungi Prodotto",
+    "editProduct": "Modifica Prodotto",
+    "productName": "Nome Prodotto",
+    "productDescription": "Descrizione Prodotto",
+    "price": "Prezzo",
+    "category": "Categoria"
+  },
+  "matching": {
+    "title": "Business Matching",
+    "description": "Trova i tuoi partner ideali in Africa",
+    "suggestions": "Suggerimenti",
+    "myMatches": "I Miei Match",
+    "matchScore": "Score di Match",
+    "accept": "Accetta",
+    "reject": "Rifiuta",
+    "viewProfile": "Visualizza Profilo"
+  },
+  "market": {
+    "title": "Market Intelligence",
+    "description": "Notizie e analisi dai mercati target",
+    "reports": "Report",
+    "news": "Notizie",
+    "alerts": "Alert",
+    "createAlert": "Crea Alert",
+    "country": "Paese",
+    "sector": "Settore"
+  },
+  "training": {
+    "title": "Formazione",
+    "description": "Webinar, corsi e certificati",
+    "events": "Eventi",
+    "courses": "Corsi",
+    "myEnrollments": "I Miei Corsi",
+    "register": "Registrati",
+    "viewCertificate": "Visualizza Certificato"
+  },
+  "blockchain": {
+    "title": "Contratti Blockchain",
+    "description": "Gestisci accordi digitali sicuri",
+    "createContract": "Crea Contratto",
+    "myContracts": "I Miei Contratti",
+    "status": "Stato",
+    "signContract": "Firma Contratto",
+    "viewDetails": "Visualizza Dettagli"
+  },
+  "payments": {
+    "title": "Pagamenti",
+    "description": "Conversione e trasferimento fondi",
+    "onRamp": "Acquista Crypto",
+    "offRamp": "Vendi Crypto",
+    "transactions": "Transazioni",
+    "amount": "Importo",
+    "currency": "Valuta",
+    "exchangeRate": "Tasso di Cambio"
+  }
+}
+

@@ -4,7 +4,7 @@
 
 ## 📋 Panoramica
 
-Africa Business Bridge è una piattaforma web completa che serve come hub digitale per facilitare le connessioni commerciali tra le piccole e medie imprese italiane e i mercati africani emergenti. La piattaforma integra servizi commerciali, market intelligence, business matching basato su IA, formazione, **contratti digitali in blockchain, un sistema di pagamenti integrato**, **gestione avanzata di ordini, logistica, ispezioni e verifica KYC/KYB**, e ora anche **funzionalità avanzate per l'adozione utente, Onboarding Guidato, Rivelazione Progressiva, UX Writing e Analytics**.
+Africa Business Bridge è una piattaforma web completa che serve come hub digitale per facilitare le connessioni commerciali tra le piccole e medie imprese italiane e i mercati africani emergenti. La piattaforma integra servizi commerciali, market intelligence, business matching basato su IA, formazione, **contratti digitali in blockchain, un sistema di pagamenti integrato**, **gestione avanzata di ordini, logistica, ispezioni e verifica KYC/KYB**, e ora anche **funzionalità avanzate per l'adozione utente, Onboarding Guidato, Rivelazione Progressiva, UX Writing e Analytics**, e un **sistema di alert** per la gestione delle notifiche.
 
 ## 🎯 Caratteristiche Principali
 
@@ -50,7 +50,8 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 ## 🏗️ Architettura Tecnica
 
 ### Frontend
-- **Framework**: React con Next.js
+- **Framework**: React con Vite
+- **Ottimizzazioni Frontend**: Lazy loading, code splitting, image optimization (tramite `vite.config.js` e `lazyLoad.jsx`)
 - **Styling**: Tailwind CSS
 - **UI Components**: shadcn/ui
 - **Routing**: React Router
@@ -69,8 +70,8 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 
 ### Infrastruttura
 - **Architettura**: Microservizi
-- **Cache**: Redis
-- **Task Queue**: Celery
+- **Cache**: Redis (per caching backend e broker Celery)
+- **Task Queue**: Celery (per task asincroni come generazione PDF, matching AI)
 - **File Storage**: Sistema locale (estendibile a S3)
 - **Blockchain**: Polygon (per smart contract e transazioni)
 
@@ -80,18 +81,20 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 africa-business-bridge/
 ├── frontend/                 # Applicazione React
 │   ├── src/
-│   │   ├── components/      # Componenti riutilizzabili (incluse OnboardingDashboard, ProgressiveDisclosure)
+│   │   ├── components/      # Componenti riutilizzabili (incluse OnboardingDashboard, ProgressiveDisclosure, LanguageSwitcher)
 │   │   ├── contexts/        # Context API (Auth, etc.)
-│   │   ├── pages/           # Pagine dell'applicazione (incluse AnalyticsDashboard)
+│   │   ├── i18n/            # Configurazione e traduzioni per multi-lingua
+│   │   ├── pages/           # Pagine dell\'applicazione (incluse AnalyticsDashboard)
 │   │   ├── hooks/           # Custom React hooks
-│   │   ├── utils/           # Utility functions (incluso uxWriting.js)
+│   │   ├── utils/           # Utility functions (incluso uxWriting.js, lazyLoad.jsx)
 │   │   └── lib/             # Utility functions
 │   └── public/              # Asset statici
 │
-├── api/                      # API FastAPI (Ristrutturata per Vercel)
+├── api/                      # API FastAPI
 │   ├── app/
 │   │   ├── api/            # Route API (incluse blockchain, payments, verification, orders, logistics, analytics)
-│   │   ├── core/           # Configurazione e security
+│   │   ├── core/           # Configurazione, security, redis_cache.py, celery_app.py
+│   │   ├── tasks/          # Task Celery (certificates, matching, market_intelligence, maintenance)
 │   │   ├── models/         # Modelli SQLAlchemy (incluse verification, orders, logistics, analytics)
 │   │   ├── schemas/        # Schemi Pydantic (incluse blockchain, payments, verification, orders, logistics, analytics)
 │   │   ├── services/       # Business logic (inclusi blockchain, payments, verification, orders, logistics, analytics)
@@ -259,6 +262,24 @@ Il sistema utilizza JWT (JSON Web Tokens) per l'autenticazione:
 - Utilizzo di shadcn/ui per componenti consistenti
 - Animazioni fluide con Tailwind CSS
 - Design responsive mobile-first
+
+## 🚀 Miglioramenti Implementati
+
+Questa sezione riassume i miglioramenti implementati a seguito dell'analisi della piattaforma.
+
+### 1. Performance e Scalabilità
+- **Ottimizzazione Frontend**: Configurazione di `vite.config.js` per code splitting e minificazione. Introduzione di `lazyLoad.jsx` per lazy loading di componenti e ottimizzazione delle immagini. (Vedi `frontend/vite.config.js`, `frontend/src/utils/lazyLoad.jsx`)
+- **Strategia di Caching Backend**: Implementazione di un modulo `redis_cache.py` per il caching delle risposte API e dei dati frequenti utilizzando Redis. (Vedi `api/app/core/redis_cache.py`)
+- **Elaborazione Task Asincroni**: Integrazione di Celery per la gestione asincrona di task a lunga esecuzione, come la generazione di certificati PDF e i calcoli di matching AI. Creazione di moduli `certificates.py` e `matching.py` in `api/app/tasks/`. (Vedi `api/app/core/celery_app.py`, `api/app/tasks/certificates.py`, `api/app/tasks/matching.py`)
+
+### 2. User Experience e Funzionalità
+- **Supporto Multi-lingua**: Implementazione di una struttura i18n nel frontend con file di traduzione per Italiano, Inglese, Swahili e Amarico, e un componente `LanguageSwitcher`. (Vedi `frontend/src/i18n/config.js`, `frontend/src/i18n/locales/`, `frontend/src/components/LanguageSwitcher.jsx`)
+
+### 3. Sicurezza e Conformità
+- **Documentazione Sicurezza e Compliance**: Creazione di un documento `SECURITY_COMPLIANCE.md` che delinea le linee guida per audit di sicurezza, conformità GDPR e audit di smart contract. (Vedi `docs/SECURITY_COMPLIANCE.md`)
+
+### 4. DevOps e Monitoraggio
+- **Documentazione DevOps e Monitoraggio**: Creazione di un documento `DEVOPS_MONITORING.md` che fornisce una guida completa per l'implementazione di pipeline CI/CD con GitHub Actions, strategie di testing, logging centralizzato (ELK Stack), monitoraggio (Prometheus/Grafana) e IaC con Terraform. (Vedi `docs/DEVOPS_MONITORING.md`)
 
 ## 🔄 Prossimi Sviluppi
 
