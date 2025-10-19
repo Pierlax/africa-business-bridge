@@ -679,3 +679,263 @@ Per supporto tecnico: api-support@africabusinessbridge.com
 
 Documentazione interattiva: https://api.africabusinessbridge.com/docs
 
+
+
+### Blockchain Contracts
+
+#### GET /blockchain/network-info
+Ottiene informazioni sulla rete blockchain corrente (es. Polygon Mumbai).
+
+**Response**:
+```json
+{
+  "chain_id": 80001,
+  "network_name": "Polygon Mumbai",
+  "block_number": 42000000,
+  "gas_price_gwei": 30
+}
+```
+
+#### POST /blockchain/agreements
+Crea un nuovo contratto di accordo sulla blockchain.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "party_a": "0xYourWalletAddress",
+  "party_b": "0xPartnerWalletAddress",
+  "description_hash": "QmDescriptionHashFromIPFS",
+  "total_amount": 1000000000, // 1000 USDC (6 decimal places)
+  "token_address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", // USDC on Polygon Mumbai
+  "escrow_address": "0xEscrowContractAddress",
+  "milestones": [
+    {
+      "description": "Milestone 1: Progettazione",
+      "amount": 500000000, // 500 USDC
+      "due_date": 1735689600 // E.g., Jan 1, 2025 00:00:00 UTC
+    }
+  ]
+}
+```
+
+**Response**:
+```json
+{
+  "transaction_hash": "0x...",
+  "agreement_id": 1
+}
+```
+
+#### POST /blockchain/agreements/{agreement_id}/sign
+Firma un accordo esistente.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "signer_address": "0xYourWalletAddress"
+}
+```
+
+**Response**:
+```json
+{
+  "transaction_hash": "0x..."
+}
+```
+
+#### POST /blockchain/agreements/{agreement_id}/milestones/{milestone_index}/complete
+Marca una milestone come completata.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**:
+```json
+{
+  "transaction_hash": "0x..."
+}
+```
+
+#### POST /blockchain/agreements/{agreement_id}/milestones/{milestone_index}/release-payment
+Rilascia il pagamento per una milestone completata.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**:
+```json
+{
+  "transaction_hash": "0x..."
+}
+```
+
+#### GET /blockchain/agreements/{agreement_id}
+Ottiene i dettagli di un accordo dalla blockchain.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**:
+```json
+{
+  "agreement_id": 1,
+  "party_a": "0xPartyAAddress",
+  "party_b": "0xPartyBAddress",
+  "description_hash": "QmDescriptionHash",
+  "total_amount": 1000000000,
+  "token_address": "0xTokenAddress",
+  "escrow_address": "0xEscrowAddress",
+  "status": "Active",
+  "milestones": [
+    {
+      "description": "Milestone 1",
+      "amount": 500000000,
+      "due_date": 1735689600,
+      "completed": true,
+      "paid": false
+    }
+  ]
+}
+```
+
+#### POST /blockchain/agreements/{agreement_id}/dispute
+Inizia una disputa per un accordo.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "reason": "Motivo della disputa"
+}
+```
+
+**Response**:
+```json
+{
+  "message": "Dispute resolution coming soon"
+}
+```
+
+#### POST /blockchain/escrow/{escrow_id}/deposit
+Deposita fondi in un conto escrow.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "amount": 1000000000, // 1000 USDC
+  "depositor_address": "0xYourWalletAddress"
+}
+```
+
+**Response**:
+```json
+{
+  "transaction_hash": "0x..."
+}
+```
+
+#### GET /blockchain/escrow/{escrow_id}/balance
+Ottiene il saldo di un conto escrow.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**:
+```json
+{
+  "balance": 1000000000 // 1000 USDC
+}
+```
+
+### Payment System
+
+#### GET /payments/exchange-rate
+Ottiene il tasso di cambio tra due valute.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Query Parameters**:
+- `from_currency` (required): Valuta di partenza (es. `EUR`, `USDC`)
+- `to_currency` (required): Valuta di arrivo (es. `USDC`, `EUR`)
+- `provider` (optional): Provider di pagamento (es. `circle`, `transak`, `moonpay`)
+
+**Response**:
+```json
+{
+  "from_currency": "EUR",
+  "to_currency": "USDC",
+  "rate": 1.05,
+  "provider": "circle"
+}
+```
+
+#### POST /payments/onramp-session
+Crea una sessione on-ramp (fiat-to-crypto).
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "wallet_address": "0xYourWalletAddress",
+  "amount": 100.00,
+  "from_currency": "EUR",
+  "to_currency": "USDC",
+  "provider": "circle"
+}
+```
+
+**Response**:
+```json
+{
+  "session_id": "sess_abc123",
+  "url": "https://payment.provider.com/session/redirect",
+  "provider": "circle"
+}
+```
+
+#### POST /payments/offramp-session
+Crea una sessione off-ramp (crypto-to-fiat).
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Request Body**:
+```json
+{
+  "wallet_address": "0xYourWalletAddress",
+  "amount": 100.00,
+  "from_currency": "USDC",
+  "to_currency": "EUR",
+  "bank_account_id": "your_bank_account_id",
+  "provider": "circle"
+}
+```
+
+**Response**:
+```json
+{
+  "session_id": "sess_xyz456",
+  "url": "https://payment.provider.com/session/redirect",
+  "provider": "circle"
+}
+```
+
+#### GET /payments/supported-currencies
+Ottiene l'elenco delle valute supportate da un provider di pagamento.
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Query Parameters**:
+- `provider` (optional): Provider di pagamento (es. `circle`, `transak`, `moonpay`)
+
+**Response**:
+```json
+{
+  "fiat": ["EUR", "USD", "GBP"],
+  "crypto": ["USDC", "USDT"]
+}
+```
+

@@ -4,7 +4,7 @@
 
 ## 📋 Panoramica
 
-Africa Business Bridge è una piattaforma web completa che serve come hub digitale per facilitare le connessioni commerciali tra le piccole e medie imprese italiane e i mercati africani emergenti. La piattaforma integra servizi commerciali, market intelligence, business matching basato su IA e formazione.
+Africa Business Bridge è una piattaforma web completa che serve come hub digitale per facilitare le connessioni commerciali tra le piccole e medie imprese italiane e i mercati africani emergenti. La piattaforma integra servizi commerciali, market intelligence, business matching basato su IA, formazione e ora anche **contratti digitali in blockchain e un sistema di pagamenti integrato**.
 
 ## 🎯 Caratteristiche Principali
 
@@ -14,18 +14,24 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 - **Market Intelligence**: Report, analisi di mercato e notizie aggiornate
 - **Formazione**: Webinar, corsi e workshop per l'internazionalizzazione
 - **Calendario B2B**: Gestione incontri e videocall con partner
+- **Contratti Blockchain**: Gestione di accordi digitali sicuri e trasparenti tramite smart contract
+- **Sistema di Pagamenti Integrato**: Conversione e trasferimento di fondi (fiat-to-crypto, crypto-to-fiat) per pagamenti contrattuali
 
 ### Per i Partner Locali
 - **Profilo Pubblico**: Visibilità verso le PMI italiane
 - **Gestione Servizi**: Presentazione dei servizi offerti
 - **Sistema di Messaggistica**: Comunicazione diretta con le PMI
 - **Calendario**: Gestione disponibilità e incontri
+- **Contratti Blockchain**: Partecipazione ad accordi digitali e gestione delle milestone
+- **Sistema di Pagamenti Integrato**: Ricezione di pagamenti sicuri tramite stablecoin
 
 ### Per gli Amministratori
 - **Dashboard Completa**: Gestione utenti e contenuti
 - **Statistiche**: Analytics e report di utilizzo
 - **Gestione Contenuti**: Pubblicazione report e notizie
 - **Sistema di Notifiche**: Alert e comunicazioni agli utenti
+- **Monitoraggio Contratti Blockchain**: Supervisione degli accordi e delle transazioni
+- **Gestione Pagamenti**: Monitoraggio delle operazioni di on-ramp e off-ramp
 
 ## 🏗️ Architettura Tecnica
 
@@ -42,12 +48,15 @@ Africa Business Bridge è una piattaforma web completa che serve come hub digita
 - **ORM**: SQLAlchemy
 - **Autenticazione**: JWT (JSON Web Tokens)
 - **API Documentation**: OpenAPI/Swagger
+- **Blockchain Integration**: web3.py per interazione con Polygon
+- **Payment Gateways**: Integrazione con Circle, Transak, MoonPay (via API)
 
 ### Infrastruttura
 - **Architettura**: Microservizi
 - **Cache**: Redis
 - **Task Queue**: Celery
 - **File Storage**: Sistema locale (estendibile a S3)
+- **Blockchain**: Polygon (per smart contract e transazioni)
 
 ## 📁 Struttura del Progetto
 
@@ -62,15 +71,19 @@ africa-business-bridge/
 │   │   └── lib/             # Utility functions
 │   └── public/              # Asset statici
 │
-├── backend/                 # API FastAPI
+├── api/                      # API FastAPI (Ristrutturata per Vercel)
 │   ├── app/
-│   │   ├── api/            # Route API
+│   │   ├── api/            # Route API (incluse blockchain e payments)
 │   │   ├── core/           # Configurazione e security
 │   │   ├── models/         # Modelli SQLAlchemy
-│   │   ├── schemas/        # Schemi Pydantic
-│   │   ├── services/       # Business logic
+│   │   ├── schemas/        # Schemi Pydantic (incluse blockchain e payments)
+│   │   ├── services/       # Business logic (inclusi blockchain e payments)
 │   │   └── utils/          # Utility functions
 │   └── tests/              # Test unitari e integrazione
+│
+├── blockchain/               # Smart Contracts Solidity
+│   ├── contracts/          # File .sol degli smart contract
+│   └── scripts/            # Script per deployment e interazione (opzionale)
 │
 ├── database/               # Script di migrazione
 ├── ai_models/              # Algoritmi di matching
@@ -84,12 +97,13 @@ africa-business-bridge/
 - Python 3.11+
 - PostgreSQL 14+
 - Redis (opzionale, per cache e task queue)
+- Wallet Ethereum/Polygon (es. MetaMask) configurato per Polygon Mumbai Testnet (per sviluppo blockchain)
 
 ### Setup Backend
 
-1. Naviga nella directory backend:
+1. Naviga nella directory `api`:
 ```bash
-cd backend
+cd api
 ```
 
 2. Crea un ambiente virtuale Python:
@@ -106,7 +120,7 @@ pip install -r requirements.txt
 4. Configura le variabili d'ambiente:
 ```bash
 cp .env.example .env
-# Modifica .env con le tue configurazioni
+# Modifica .env con le tue configurazioni (incluse le chiavi API per i servizi di pagamento e le credenziali blockchain)
 ```
 
 5. Crea il database PostgreSQL:
@@ -126,7 +140,7 @@ La documentazione Swagger su `http://localhost:8000/api/docs`
 
 ### Setup Frontend
 
-1. Naviga nella directory frontend:
+1. Naviga nella directory `frontend`:
 ```bash
 cd frontend
 ```
@@ -180,6 +194,11 @@ L'applicazione sarà disponibile su `http://localhost:5173`
 - **Lesson**: Lezioni dei corsi
 - **CourseEnrollment**: Iscrizioni ai corsi
 
+### Blockchain & Pagamenti
+- **BlockchainContract**: Riferimento ai contratti on-chain (per tracciamento)
+- **PaymentTransaction**: Record delle transazioni di pagamento (on-ramp/off-ramp)
+- **Wallet**: Indirizzi wallet degli utenti
+
 ## 🔐 Autenticazione
 
 Il sistema utilizza JWT (JSON Web Tokens) per l'autenticazione:
@@ -221,25 +240,29 @@ Il sistema utilizza JWT (JSON Web Tokens) per l'autenticazione:
 - [x] Sistema autenticazione
 - [x] Dashboard base
 
-### Fase 2 - In Corso 🚧
-- [ ] Modulo Expo Virtuale completo
-- [ ] Sistema upload file
-- [ ] Catalogo prodotti
+### Fase 2 - Completata ✅
+- [x] Modulo Expo Virtuale completo
+- [x] Sistema upload file
+- [x] Catalogo prodotti
 
-### Fase 3 - Pianificata 📋
-- [ ] Algoritmo Business Matching con IA
-- [ ] Integrazione API videocall (Zoom/Google Meet)
-- [ ] Sistema di messaggistica real-time
+### Fase 3 - Completata ✅
+- [x] Algoritmo Business Matching con IA
+- [x] Integrazione API videocall (Zoom/Google Meet)
+- [x] Sistema di messaggistica real-time
 
-### Fase 4 - Pianificata 📋
-- [ ] Scraper per Market Intelligence
-- [ ] Sistema alert personalizzati
-- [ ] Feed notizie automatizzato
+### Fase 4 - Completata ✅
+- [x] Scraper per Market Intelligence
+- [x] Sistema alert personalizzati
+- [x] Feed notizie automatizzato
 
-### Fase 5 - Pianificata 📋
-- [ ] Piattaforma formazione completa
-- [ ] Sistema certificati PDF
-- [ ] Gestione webinar live
+### Fase 5 - Completata ✅
+- [x] Piattaforma formazione completa
+- [x] Sistema certificati PDF
+- [x] Gestione webinar live
+
+### Nuove Funzionalità (Implementate) ✅
+- [x] **Contratti Blockchain**: Implementazione smart contract e API per gestione accordi
+- [x] **Sistema di Pagamenti Integrato**: Implementazione servizi e API per on-ramp/off-ramp (fiat-to-crypto, crypto-to-fiat)
 
 ## 📝 API Documentation
 
@@ -253,7 +276,7 @@ La documentazione completa delle API è disponibile tramite Swagger UI una volta
 
 ### Backend
 ```bash
-cd backend
+cd api
 pytest
 ```
 
@@ -286,6 +309,6 @@ Per informazioni sul progetto, contattare il team di sviluppo.
 
 ---
 
-**Versione**: 1.0.0  
-**Ultimo aggiornamento**: 2024
+**Versione**: 1.1.0  
+**Ultimo aggiornamento**: 2025
 

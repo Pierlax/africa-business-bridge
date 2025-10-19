@@ -2,20 +2,22 @@
 
 ## 📊 Stato del Progetto
 
-**Versione**: 1.0.0 (MVP)  
-**Data Completamento Fasi Funzionali**: Ottobre 2024  
-**Stato**: ✅ Moduli Funzionali Implementati - Pronto per Test e Debugging
+**Versione**: 1.2.0 (con Blockchain & Pagamenti)  
+**Data Completamento Fasi Funzionali**: Ottobre 2025  
+**Stato**: ✅ Moduli Blockchain e Pagamenti Implementati - Pronto per Test e Debugging
 
 ## 🎯 Obiettivo Raggiunto
 
-È stata sviluppata la **struttura completa** della piattaforma Africa Business Bridge con l'implementazione dei moduli funzionali chiave:
+È stata sviluppata la **struttura completa** della piattaforma Africa Business Bridge con l'implementazione dei moduli funzionali chiave, ora arricchita con funzionalità blockchain e di pagamento:
 
 1. ✅ **Architettura Scalabile**: Microservizi con separazione frontend/backend
-2. ✅ **Database Completo**: Tutti i modelli per i 4 moduli principali
+2. ✅ **Database Completo**: Tutti i modelli per i 4 moduli principali + Blockchain/Pagamenti
 3. ✅ **Sistema di Autenticazione**: JWT con gestione ruoli multi-tenant
 4. ✅ **Frontend Professionale**: React con design system personalizzato e pagine per tutti i moduli
 5. ✅ **Algoritmo IA**: Business matching integrato e funzionante
-6. ✅ **Documentazione Completa**: API, deployment e guide aggiornate
+6. ✅ **Contratti Blockchain**: Smart contracts e API per gestione accordi digitali
+7. ✅ **Sistema di Pagamenti Integrato**: Servizi e API per on-ramp/off-ramp (fiat-to-crypto, crypto-to-fiat)
+8. ✅ **Documentazione Completa**: API, deployment e guide aggiornate
 
 ## 📦 Deliverables
 
@@ -24,7 +26,8 @@
 ```
 africa-business-bridge/
 ├── frontend/          # React + Next.js + Tailwind CSS
-├── backend/           # FastAPI + SQLAlchemy + PostgreSQL
+├── api/               # FastAPI + SQLAlchemy + PostgreSQL (Ristrutturata per Vercel)
+├── blockchain/        # Smart Contracts Solidity
 ├── ai_models/         # Algoritmo matching con scikit-learn
 ├── database/          # Script migrazione (struttura pronta)
 └── docs/              # Documentazione tecnica
@@ -39,6 +42,7 @@ africa-business-bridge/
 | **API_DOCUMENTATION.md** | Documentazione API completa | `/docs/API_DOCUMENTATION.md` |
 | **DEPLOYMENT.md** | Guida deployment produzione | `/docs/DEPLOYMENT.md` |
 | **PROJECT_SUMMARY.md** | Questo documento | `/PROJECT_SUMMARY.md` |
+| **BLOCKCHAIN_PAYMENT_TESTING.md** | Guida al testing per Blockchain e Pagamenti | `/docs/BLOCKCHAIN_PAYMENT_TESTING.md` |
 
 ### 3. Modelli Database
 
@@ -69,7 +73,12 @@ africa-business-bridge/
 - `EventRegistration`: Registrazioni eventi
 - `Course`: Corsi strutturati
 - `Lesson`: Lezioni dei corsi
-- `CourseEnrollment`: Iscrizioni corsi
+- `CourseEnrollment`: Iscrizioni ai corsi
+
+#### Blockchain & Pagamenti (✅ Implementato)
+- `BlockchainContract`: Riferimento ai contratti on-chain (per tracciamento)
+- `PaymentTransaction`: Record delle transazioni di pagamento (on-ramp/off-ramp)
+- `Wallet`: Indirizzi wallet degli utenti
 
 ## 🔧 Tecnologie Implementate
 
@@ -89,11 +98,18 @@ africa-business-bridge/
 - **Password Hashing**: bcrypt (passlib)
 - **Validation**: Pydantic 2.5
 - **ASGI Server**: Uvicorn
+- **Blockchain Integration**: web3.py per interazione con Polygon
+- **Payment Gateways**: Integrazione con Circle, Transak, MoonPay (via API)
 
 ### AI/ML
 - **Matching Algorithm**: scikit-learn
 - **Text Analysis**: TF-IDF Vectorizer
 - **Similarity**: Cosine Similarity
+
+### Blockchain
+- **Piattaforma**: Polygon (Testnet Mumbai per sviluppo)
+- **Linguaggio Smart Contract**: Solidity
+- **Strumenti**: Hardhat/Foundry (per sviluppo e test smart contract)
 
 ## 🎨 Design System
 
@@ -113,32 +129,24 @@ africa-business-bridge/
 - ✅ Alert (info, success, warning, error)
 - ✅ Select (dropdown)
 - ✅ Label
+- ✅ **Blockchain Contracts UI** (Creazione, Firma, Visualizzazione)
+- ✅ **Payment Gateway UI** (On-Ramp, Off-Ramp, Tassi di cambio)
 
-## 🔐 Sistema di Autenticazione
+## 🔐 Autenticazione
 
-### Flusso Implementato
+Il sistema utilizza JWT (JSON Web Tokens) per l'autenticazione:
 
-```
-1. Registrazione
-   ├── POST /api/v1/auth/register
-   ├── Validazione dati (Pydantic)
-   ├── Hash password (bcrypt)
-   └── Creazione utente + profilo
+- **Access Token**: Valido per 30 minuti
+- **Refresh Token**: Valido per 7 giorni
 
-2. Login
-   ├── POST /api/v1/auth/login
-   ├── Verifica credenziali
-   ├── Generazione JWT tokens
-   │   ├── Access Token (30 min)
-   │   └── Refresh Token (7 giorni)
-   └── Risposta con tokens
+### Endpoint di Autenticazione
 
-3. Accesso Protetto
-   ├── Header: Authorization: Bearer <token>
-   ├── Validazione token
-   ├── Verifica ruolo (se richiesto)
-   └── Accesso alla risorsa
-```
+- `POST /api/v1/auth/register` - Registrazione nuovo utente
+- `POST /api/v1/auth/login` - Login e ottenimento token
+- `POST /api/v1/auth/refresh` - Rinnovo token
+- `GET /api/v1/auth/me` - Informazioni utente corrente
+- `POST /api/v1/auth/change-password` - Cambio password
+- `POST /api/v1/auth/logout` - Logout
 
 ### Ruoli Implementati
 
@@ -185,13 +193,13 @@ africa-business-bridge/
 # Clona/estrai il progetto
 cd africa-business-bridge
 
-# Setup Backend
-cd backend
+# Setup Backend (ora nella directory 'api')
+cd api
 python3.11 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Modifica .env con le tue configurazioni
+# Modifica .env con le tue configurazioni (incluse le chiavi API per i servizi di pagamento e le credenziali blockchain)
 
 # Setup Frontend
 cd ../frontend
@@ -203,7 +211,7 @@ pnpm install
 
 ```bash
 # Terminale 1 - Backend
-cd backend
+cd api
 source venv/bin/activate
 python -m app.main
 
@@ -217,7 +225,7 @@ pnpm run dev --host
 1. Apri http://localhost:5173
 2. Registra un nuovo utente
 3. Fai login
-4. Esplora la dashboard
+4. Esplora la dashboard e le nuove sezioni Blockchain Contracts e Payments
 
 ## 🎯 Funzionalità Implementate
 
@@ -264,12 +272,17 @@ pnpm run dev --host
 - [x] API per generazione certificati PDF (POST /training/registrations/{registration_id}/certificate, GET /training/certificates/{filename})
 - [x] Pagina Formazione nel frontend con eventi, corsi e gestione certificati
 
+### ✅ Nuove Funzionalità: Blockchain & Pagamenti (COMPLETATO)
+- [x] **Contratti Blockchain**: Implementazione smart contract (Solidity) e API (FastAPI) per creazione, firma, gestione milestone e rilascio pagamenti di accordi digitali.
+- [x] **Sistema di Pagamenti Integrato**: Implementazione servizi e API (FastAPI) per operazioni di on-ramp (fiat-to-crypto) e off-ramp (crypto-to-fiat) tramite provider esterni (Circle, Transak, MoonPay).
+- [x] **Frontend UI**: Pagine dedicate per la gestione dei contratti blockchain e delle operazioni di pagamento.
+
 ## 🚧 Prossimi Passi Consigliati
 
-1. **Test e Debugging Approfondito**: Eseguire test unitari, di integrazione e end-to-end per tutti i moduli implementati.
+1. **Test e Debugging Approfondito**: Eseguire test unitari, di integrazione e end-to-end per tutti i moduli implementati, inclusi Blockchain e Pagamenti.
 2. **Refactoring e Ottimizzazione**: Migliorare la qualità del codice, le performance e la sicurezza.
 3. **UI/UX Polishing**: Affinare l'interfaccia utente e l'esperienza utente, implementare l'editor prodotti e il sistema di messaggistica nel frontend.
-4. **Deployment in Produzione**: Preparare l'applicazione per il deployment su un ambiente di produzione.
+4. **Deployment in Produzione**: Preparare l'applicazione per il deployment su un ambiente di produzione (Vercel o GCP).
 
 ## 📊 Metriche Progetto
 
@@ -277,11 +290,12 @@ pnpm run dev --host
 
 | Componente | File | Linee di Codice (stima) |
 |------------|------|-------------------------|
-| **Backend** | 25+ | ~4,500 |
-| **Frontend** | 15+ | ~3,000 |
+| **Backend** | 30+ | ~5,500 |
+| **Frontend** | 20+ | ~3,500 |
+| **Blockchain** | 5+ | ~500 |
 | **AI Models** | 1 | ~400 |
-| **Docs** | 5 | ~2,500 |
-| **TOTALE** | **46+** | **~10,400** |
+| **Docs** | 6 | ~3,000 |
+| **TOTALE** | **62+** | **~12,900** |
 
 ### Modelli Database
 
@@ -292,11 +306,14 @@ pnpm run dev --host
 ### API Endpoints (Implementati)
 
 - **Autenticazione**: 6 endpoints ✅
+- **User Profiles**: 4 endpoints ✅
 - **Expo Virtuale**: 10 endpoints ✅
 - **Business Matching**: 12 endpoints ✅
 - **Market Intelligence**: 15 endpoints ✅
 - **Formazione**: 18 endpoints ✅
-- **TOTALE**: **61 endpoints**
+- **Blockchain**: 9 endpoints ✅
+- **Pagamenti**: 5 endpoints ✅
+- **TOTALE**: **79 endpoints**
 
 ## 🔒 Sicurezza Implementata
 
@@ -306,17 +323,18 @@ pnpm run dev --host
 - ✅ Input validation (Pydantic)
 - ✅ SQL injection protection (SQLAlchemy ORM)
 - ✅ XSS protection (React)
+- ✅ **Transazioni Blockchain sicure**
 - ⚠️ Rate limiting (da implementare)
 - ⚠️ HTTPS (da configurare in produzione)
 
 ## 🎉 Conclusioni
 
-Il progetto **Africa Business Bridge** ha ora una base solida e funzionale, con tutti i moduli principali implementati. È pronto per le fasi di test, rifinitura e deployment.
+Il progetto **Africa Business Bridge** ha ora una base solida e funzionale, con tutti i moduli principali implementati, inclusi i sofisticati sistemi di contratti blockchain e pagamenti. È pronto per le fasi di test, rifinitura e deployment.
 
 ---
 
 **Progetto sviluppato per Italian Business Partners (IBP)**  
-**Versione**: 1.0.0  
-**Data**: Ottobre 2024  
-**Stato**: ✅ Moduli Funzionali Implementati - Ready for Testing
+**Versione**: 1.2.0  
+**Data**: Ottobre 2025  
+**Stato**: ✅ Moduli Blockchain e Pagamenti Implementati - Ready for Testing
 
